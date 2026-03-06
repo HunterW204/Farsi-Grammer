@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farsi Grammar Master</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eef0f8;min-height:100vh;color:#1a1a2e}
+#app{max-width:680px;margin:0 auto;padding:16px}
+
+/* ── Header ── */
+.hdr{background:linear-gradient(135deg,#1a237e 0%,#3949ab 100%);color:#fff;padding:22px 24px;border-radius:14px;text-align:center;margin-bottom:18px;box-shadow:0 4px 16px rgba(26,35,126,.25)}
+.hdr h1{font-size:1.6rem;letter-spacing:.5px}
+.hdr .sub{opacity:.75;font-size:.85rem;margin-top:4px;font-family:'Courier New',monospace}
+
+/* ── Cards ── */
+.card{background:#fff;border-radius:12px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+
+/* ── Buttons ── */
+.btn{display:inline-block;padding:11px 22px;border:none;border-radius:9px;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .18s;text-align:center}
+.btn-primary{background:#1a237e;color:#fff}
+.btn-primary:hover{background:#283593}
+.btn-secondary{background:#e8eaf6;color:#1a237e}
+.btn-secondary:hover{background:#c5cae9}
+.btn-danger{background:#b71c1c;color:#fff}
+.btn-danger:hover{background:#c62828}
+.btn-block{display:block;width:100%;margin-bottom:10px;padding:13px 22px;font-size:1rem}
+.btn-sm{padding:7px 14px;font-size:.85rem}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+/* ── Progress bar ── */
+.prog-wrap{background:#e0e0e0;border-radius:5px;height:7px;margin-bottom:18px;overflow:hidden}
+.prog-fill{background:linear-gradient(90deg,#1a237e,#5c6bc0);height:7px;border-radius:5px;transition:width .3s}
+
+/* ── Topic list ── */
+.topic-row{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border:2px solid #e8eaf6;border-radius:9px;margin-bottom:8px;cursor:pointer;background:#fff;transition:all .18s}
+.topic-row:hover{border-color:#1a237e;background:#e8eaf6}
+.topic-row.mastered{border-color:#f9a825}
+.topic-name{font-size:.9rem;font-weight:500}
+.badge{display:inline-block;padding:3px 9px;border-radius:10px;font-size:.75rem;font-weight:700}
+.badge-new{background:#f5f5f5;color:#888}
+.badge-ok{background:#e3f2fd;color:#1565c0}
+.badge-great{background:#fff8e1;color:#e65100}
+
+/* ── Lesson ── */
+.lesson-box{background:#f8f9fc;border-radius:9px;padding:16px 18px;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.75;white-space:pre-wrap;border:1px solid #e0e0e0;margin-bottom:16px;color:#222}
+
+/* ── Exercise ── */
+.ex-type{display:inline-block;padding:3px 10px;border-radius:10px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.ex-mc{background:#e3f2fd;color:#1565c0}
+.ex-fill{background:#f3e5f5;color:#6a1b9a}
+.ex-scr{background:#e8f5e9;color:#2e7d32}
+.ex-prompt{font-size:1.05rem;font-weight:600;line-height:1.5;margin-bottom:16px}
+.ex-hint{font-size:.82rem;color:#888;margin-bottom:12px;font-style:italic}
+
+/* ── MC choices ── */
+.choice{display:block;width:100%;padding:13px 16px;border:2px solid #e0e0e0;border-radius:9px;background:#fff;cursor:pointer;font-size:.92rem;text-align:left;margin-bottom:9px;transition:all .18s;font-family:inherit}
+.choice:hover:not(:disabled){border-color:#1a237e;background:#e8eaf6}
+.choice.correct{border-color:#2e7d32!important;background:#e8f5e9!important;color:#1b5e20;font-weight:600}
+.choice.wrong{border-color:#c62828!important;background:#ffebee!important;color:#b71c1c;font-weight:600}
+.choice:disabled{cursor:default}
+
+/* ── Fill ── */
+.fill-input{width:100%;padding:12px 15px;border:2px solid #e0e0e0;border-radius:9px;font-size:1rem;outline:none;transition:border-color .2s;font-family:inherit}
+.fill-input:focus{border-color:#1a237e}
+.fill-input.correct{border-color:#2e7d32;background:#e8f5e9}
+.fill-input.wrong{border-color:#c62828;background:#ffebee}
+.fill-input:disabled{cursor:default}
+
+/* ── Scramble ── */
+.scr-label{font-size:.78rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;margin-bottom:8px}
+.chip{padding:8px 14px;border-radius:20px;cursor:pointer;font-size:.88rem;font-weight:500;transition:all .15s;user-select:none;border:2px solid transparent}
+.chip-pool{background:#e8eaf6;border-color:#c5cae9;color:#1a237e}
+.chip-pool:hover{background:#c5cae9}
+.chip-built{background:#1a237e;color:#fff;border-color:#1a237e}
+.chip-built:hover{background:#283593}
+.chip-used{opacity:.25;cursor:default;pointer-events:none}
+.scr-divider{border:none;border-top:2px dashed #e0e0e0;margin:10px 0}
+
+/* ── Feedback ── */
+.feedback{padding:13px 16px;border-radius:9px;margin-top:14px}
+.feedback.ok{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
+.feedback.bad{background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c}
+.feedback-title{font-weight:700;font-size:1rem}
+.feedback-answer{margin-top:4px;font-size:.88rem;opacity:.85}
+.feedback-expl{margin-top:6px;font-size:.83rem;color:#555;font-weight:400}
+
+/* ── Results ── */
+.result-circle{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px}
+.result-pct{font-size:2.2rem;font-weight:800}
+.result-frac{font-size:.85rem;opacity:.8}
+.result-msg{text-align:center;font-size:1rem;color:#555;margin-bottom:20px}
+
+/* ── Progress screen ── */
+.prog-row{padding:11px 14px;border-radius:9px;margin-bottom:8px;background:#fff;border:1px solid #e8eaf6}
+.prog-row-name{font-size:.88rem;font-weight:600;margin-bottom:5px}
+.mini-bar-wrap{background:#e0e0e0;border-radius:3px;height:5px}
+.mini-bar{border-radius:3px;height:5px}
+.prog-meta{font-size:.75rem;color:#888;margin-top:4px}
+
+/* ── Stats grid ── */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.stat{background:#e8eaf6;border-radius:10px;padding:14px;text-align:center}
+.stat-n{font-size:1.7rem;font-weight:800;color:#1a237e}
+.stat-l{font-size:.75rem;color:#666;margin-top:2px}
+
+/* ── Misc ── */
+.section-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#888;margin-bottom:12px}
+.back-btn{background:none;border:none;color:#1a237e;font-size:.9rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px;display:flex;align-items:center;gap:5px}
+.back-btn:hover{text-decoration:underline}
+.q-counter{font-size:.8rem;color:#888;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ── Helpers ──────────────────────────────────────────────────
+
+function mc(p,a,w,h='',e=''){return{kind:'mc',prompt:p,answer:a,choices:[...w,a],hint:h,expl:e}}
+function fill(p,a,h='',e=''){return{kind:'fill',prompt:p,answer:a,hint:h,expl:e}}
+function scr(p,a,h='',e=''){return{kind:'scr',prompt:p,answer:a,hint:h,expl:e}}
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]]}return b}
+
+function normalize(s){
+  return s.toLowerCase().trim().replace(/[?.!,]/g,'')
+    .replace(/[âÂ]/g,'a').replace(/[ôÔ]/g,'o').replace(/[îÎ]/g,'i')
+    .replace(/[ûÛ]/g,'u').replace(/[éÉ]/g,'e')
+    .replace(/'/g,'').replace(/-/g,'').replace(/\s+/g,'');
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+// ── Progress ─────────────────────────────────────────────────
+
+let progress={};
+try{progress=JSON.parse(localStorage.getItem('farsi_grammar')||'{}')}catch(e){}
+function saveProgress(){try{localStorage.setItem('farsi_grammar',JSON.stringify(progress))}catch(e){}}
+
+// ── State ────────────────────────────────────────────────────
+
+let S={
+  screen:'menu',
+  topicIdx:0,
+  exercises:[],
+  exIdx:0,
+  score:0,
+  mode:'study',
+  answered:false,
+  correct:false,
+  choices:[],
+  chosenMC:'',
+  fillVal:'',
+  pool:[],
+  built:[],
+};
+
+// ── Topics ───────────────────────────────────────────────────
+
+const TOPICS=[
+
+{name:"1. Personal Pronouns",
+lesson:`Farsi personal pronouns:
+  man    = I              mâ     = we
+  to     = you (informal) shomâ  = you (pl. / formal)
+  u      = he / she / it  ânhâ   = they
+
+Key facts:
+  - NO grammatical gender: 'u' means he, she, AND it
+  - 'shomâ' is both plural 'you' and polite singular 'you'
+  - 'to' is only for friends, family, and children
+  - Subject pronouns are often dropped — the verb ending
+    already shows who the subject is:  miravam = I go`,
+exercises:[
+  mc("What does 'u' mean in Farsi?","he / she / it",["I","we","you (formal)"]),
+  mc("How do you say 'we'?","mâ",["man","to","u"]),
+  mc("Which pronoun covers both plural and formal 'you'?","shomâ",["to","u","ânhâ"]),
+  fill("'They went.' — fill in the subject pronoun: ___ raftand","ânhâ","3rd person plural"),
+  mc("'to' is used for:","informal singular you",["formal you","they","I"]),
+  fill("Farsi has ___ grammatical genders.","0","","Farsi has NO grammatical gender. 'u' = he, she, and it."),
+  mc("When can subject pronouns be omitted?","always — the verb ending shows the subject",["never","only in past tense","only 'man'"]),
+]},
+
+{name:"2. To Be — Present (hastan)",
+lesson:`Present tense of 'to be':
+  hastam  = I am          hastim  = we are
+  hasti   = you are       hastid  = you (pl.) are
+  ast     = he/she/it is  hastand = they are
+
+Negative — replace 'hast-' with 'nist-':
+  nistam, nisti, nist, nistim, nistid, nistand
+
+Short enclitic forms attach directly to predicates:
+  man khub-am   = I am well       (khub + -am)
+  to  khub-i    = you are well    (khub + -i)
+  u   khub-ast  = he/she is well  (khub + -ast)`,
+exercises:[
+  mc("'I am' in Farsi:","hastam",["hasti","ast","nistam"]),
+  mc("'They are' in Farsi:","hastand",["hastim","hastid","hasti"]),
+  mc("'He is not' in Farsi:","nist",["ast","hastam","nabud"]),
+  fill("'We are not' = nist___","im","","nistim = we are not"),
+  fill("'You (pl.) are' = hast___","id"),
+  mc("The enclitic 'I am' attached to a predicate:","khub-am",["khub-ast","khub-i","khub-im"]),
+  fill("'They are not' = nist___","and","","nistand"),
+]},
+
+{name:"3. To Be — Past (budan)",
+lesson:`Past tense of 'to be':
+  budam  = I was       budim  = we were
+  budi   = you were    budid  = you (pl.) were
+  bud    = he/she was  budand = they were
+
+Negative — add 'na-' prefix:
+  nabudam, nabudi, nabud, nabudim, nabudid, nabudand
+
+Example sentences:
+  u xaste bud.       = He/she was tired.
+  mâ khâne nabudim.  = We were not at home.
+  hava sard bud.     = The weather was cold.`,
+exercises:[
+  mc("'She was' in Farsi:","bud",["budam","budi","budand"]),
+  mc("'We were not' in Farsi:","nabudim",["nabudi","nabudand","nistim"]),
+  fill("'I was tired' = man xaste ___","budam"),
+  mc("'They were' in Farsi:","budand",["budim","budid","budan"]),
+  fill("'You were not' = na___i","bud","","nabudi = you were not"),
+  mc("Past negative of 'to be' uses prefix:","na-",["ne-","bi-","be-"]),
+  fill("'He was not here' = u injâ na___","bud"),
+]},
+
+{name:"4. Plural Formation",
+lesson:`Two plural suffixes:
+
+  -hâ  : general plural (colloquial & formal)
+           ketâb  → ketâb-hâ   (books)
+           miz    → miz-hâ     (tables)
+
+  -ân  : formal/literary, preferred for animates
+           mard       → mard-ân        (men)
+           dâneshju   → dâneshju-yân   (students)  ← -yân after vowel
+
+IMPORTANT: After numbers, use SINGULAR — no plural suffix!
+  se ketâb   = three books     (NOT: se ketâb-hâ)
+  dah nafar  = ten people`,
+exercises:[
+  mc("Plural of 'ketâb' (book) in everyday speech:","ketâb-hâ",["ketâb-ân","ketâbim","ketâbid"]),
+  fill("'dogs' = sag-___","hâ"),
+  mc("Which is CORRECT for 'two books'?","do ketâb",["do ketâb-hâ","do ketâb-ân","ketâb-hâ do"]),
+  mc("Formal/literary plural of 'mard' (man):","mard-ân",["mard-hâ","mard-im","mard-id"]),
+  fill("'students' (formal) = dâneshju-___","yân","-yân after a vowel"),
+  mc("After numbers in Farsi, use:","the singular form",["-hâ plural","-ân plural","either plural"]),
+  fill("'cities' = shahr-___","hâ"),
+]},
+
+{name:"5. Ezafe Construction",
+lesson:`The ezafe (-e / -ye) links a noun to what follows it:
+  • noun + adjective:   ketâb-e khub     (a good book)
+  • noun + noun:        dar-e khâne      (door of the house)
+  • noun + possessor:   mâdar-e Ali      (Ali's mother)
+  • noun + prep phrase: dokhtari az Irân (a girl from Iran)
+
+Pronunciation rule:
+  -e   after a consonant:  ketâb-e, mard-e, rang-e
+  -ye  after a vowel:      khâne-ye, dâneshgâh-ye
+
+The ezafe vowel is NOT written in standard Farsi
+script — it is implied by the reader.`,
+exercises:[
+  mc("'A good book' in Farsi:","ketâb-e khub",["khub ketâb","ketâb khub","khub-e ketâb"]),
+  fill("'The door of the house' = dar-e ___","khâne"),
+  mc("After a vowel, the ezafe becomes:","-ye",["-e","-i","-â"]),
+  fill("'Ali's mother' = mâdar-___ Ali","e","","After a consonant: -e"),
+  mc("'A big house' = ?","khâne-ye bozorg",["bozorg khâne","khâne bozorg","bozorg-e khâne"]),
+  mc("Ezafe is used to:","link a noun to what follows it",["mark the direct object","mark the subject","form plurals"]),
+  fill("'The color of the sky' = rang-e ___","âsmân"),
+]},
+
+{name:"6. Adjectives",
+lesson:`Adjectives come AFTER the noun, linked by ezafe:
+  ketâb-e bozorg    = a big book       (NOT: bozorg ketâb)
+  mard-e khub       = a good man
+  dokhtar-e bâhush  = an intelligent girl
+
+Key facts:
+  - NO gender agreement (unlike French or Spanish)
+  - NO number agreement — adjective stays the same for plurals
+  - Stack multiple adjectives with ezafe:
+    ketâb-e khub-e jadid  = a good new book
+
+Comparison:
+  bozorg-tar    = bigger       (-tar  = comparative)
+  bozorg-tarin  = biggest      (-tarin = superlative)
+  Superlative precedes the noun: khub-tarin ketâb`,
+exercises:[
+  mc("'A big house' in Farsi:","khâne-ye bozorg",["bozorg khâne","bozorg-e khâne","khâne bozorg"]),
+  fill("'A beautiful girl' = dokhtar-e ___","zibâ","zibâ = beautiful"),
+  mc("Adjectives in Farsi agree with nouns in:","nothing — no agreement",["gender","number","both"]),
+  fill("'bigger' = bozorg___","tar"),
+  mc("'The best book' = ?","khub-tarin ketâb",["ketâb-e khub-tarin","ketâb khub-tarin","khub-tar ketâb"]),
+  mc("Where does the adjective go?","after the noun, with ezafe",["before the noun","before the verb","at the end"]),
+  fill("'A new red car' = mâshin-e qermez-e ___","jadid","jadid = new"),
+]},
+
+{name:"7. Possessive Suffixes",
+lesson:`Possessive suffixes attach directly to the noun:
+  -am    = my         -emân  = our
+  -at    = your       -etân  = your (pl./formal)
+  -ash   = his/her    -eshân = their
+
+After a consonant (most nouns):
+  ketâb-am  ketâb-at  ketâb-ash
+  ketâb-emân  ketâb-etân  ketâb-eshân
+
+After a vowel:
+  khâne-am  khâne-at  khâne-ash  (same suffixes)
+
+Alternative emphatic form: noun + ezafe + pronoun
+  ketâb-e man = MY book (emphasising possession)`,
+exercises:[
+  mc("'My book' in Farsi:","ketâb-am",["ketâb-at","ketâb-ash","ketâb-emân"]),
+  fill("'his/her mother' = mâdar-___","ash"),
+  mc("'our house' = ?","khâne-emân",["khâne-am","khâne-eshân","khâne-etân"]),
+  fill("'your (pl./formal) friend' = doost-___","etân"),
+  mc("'their book' = ?","ketâb-eshân",["ketâb-emân","ketâb-etân","ketâb-ash"]),
+  fill("'my name' = esm-___","am"),
+  mc("'your (informal) house' = ?","khâne-at",["khâne-am","khâne-ash","khâne-etân"]),
+]},
+
+{name:"8. Object Marker râ",
+lesson:`'râ' marks a DEFINITE or SPECIFIC direct object.
+It comes directly after the noun or pronoun it marks.
+
+  With râ (definite/specific):
+    ketâb râ khândam.   = I read THE book.      (specific book)
+    u râ didam.         = I saw HIM / HER.
+    Ali râ shenâkhtam.  = I recognized Ali.
+
+  Without râ (indefinite / nonspecific):
+    ketâbi khândam.     = I read A book.        (some book)
+    film didam.         = I watched a film.
+
+Colloquial speech: râ shortens to -o / -ro attached to noun:
+  ketâb-o khândam  (spoken)  =  ketâb râ khândam  (formal)`,
+exercises:[
+  mc("'I read the book' (definite):","ketâb râ khândam",["ketâbi khândam","ketâb khândam","râ ketâb khândam"]),
+  mc("'I read a book' (indefinite):","ketâbi khândam",["ketâb râ khândam","ketâb khândam","râ ketâbi khândam"]),
+  fill("'I saw him/her' = u ___ didam","râ"),
+  mc("'râ' marks objects that are:","definite or specific",["indefinite","plural only","animate only"]),
+  fill("'She called me' = u man ___ sedâ zad","râ"),
+  mc("In colloquial speech, râ often becomes:","-o or -ro attached to noun",["disappears entirely","-râ attached to verb","-i suffix"]),
+  mc("Which is correct for 'He loves her'?","u râ dust dârad",["u dust dârad","dust dârad u","u dust dârad râ"]),
+]},
+
+{name:"9. Prepositions",
+lesson:`Basic prepositions (come BEFORE the noun):
+  dar      = in, at          be       = to, toward
+  az       = from, of        bâ       = with
+  barâye   = for             tâ       = until, up to
+  bedune   = without
+
+Spatial prepositions (use ezafe to link to noun):
+  ruy-e    = on top of       zir-e    = under
+  kenâr-e  = beside          jelo-ye  = in front of
+  posht-e  = behind          tu-ye    = inside of
+  birun-e  = outside of      miân-e   = between
+
+Example:  ruy-e miz = on the table  (not: ruy miz)`,
+exercises:[
+  mc("'in the house' = ?","dar khâne",["be khâne","az khâne","bâ khâne"]),
+  mc("'to school' = ?","be madrese",["dar madrese","az madrese","barâye madrese"]),
+  fill("'from Tehran' = ___ Tehrân","az"),
+  mc("'on the table' = ?","ruy-e miz",["dar miz","zir-e miz","be miz"]),
+  fill("'with my friend' = ___ doost-am","bâ"),
+  mc("'for you' = ?","barâye to",["bâ to","az to","dar to"]),
+  fill("'under the chair' = ___ sandali","zir-e"),
+]},
+
+{name:"10. SOV Word Order",
+lesson:`Farsi is Subject–Object–Verb (SOV).
+The VERB always goes at the END of the sentence.
+
+  English (SVO):  I      read      the book.
+  Farsi   (SOV):  man    ketâb râ  khândam.
+                  S      O         V
+
+More examples:
+  Ali mâdar-ash râ dust dârad.  = Ali loves his mother.
+  u be mâdrese raft.             = He/she went to school.
+  mâ diruz film didim.           = We watched a film yesterday.
+
+Rules:
+  - Adjectives come AFTER nouns (with ezafe)
+  - Time words usually follow the subject
+  - Even in questions, the verb stays at the end`,
+exercises:[
+  scr("Arrange into a correct Farsi sentence:","man ketâb râ khândam","Subject – Object – Verb"),
+  mc("In Farsi, the verb goes:","at the end of the sentence",["at the start","right after the subject","anywhere"]),
+  scr("Arrange into a correct Farsi sentence:","Ali be mâdrese raft"),
+  fill("'She reads the newspaper.' What word comes last?\n  u ruzname râ ___","mikhânad"),
+  mc("Which has correct Farsi word order?","man âb râ khordam",["man khordam âb râ","khordam man âb râ","âb man râ khordam"]),
+  scr("Arrange into a correct Farsi sentence:","mâ diruz film didim"),
+  mc("'Ali saw Sara' in Farsi:","Ali Sârâ râ did",["Ali did Sârâ râ","did Ali Sârâ râ","Sârâ râ did Ali"]),
+]},
+
+{name:"11. Present Tense",
+lesson:`Formation:  mi-  +  PRESENT STEM  +  personal ending
+Personal endings:  -am, -i, -ad, -im, -id, -and
+
+Verb stems (infinitive → present stem):
+  kardan  (to do)   → kon  :  mikonam, mikoni, mikonad...
+  raftan  (to go)   → rav  :  miravam, miravi, miravad...
+  khândan (to read) → khân :  mikhânam, mikhâni, mikhânad...
+  didan   (to see)  → bin  :  mibinam, mibini, mibinad...
+  goftan  (to say)  → gu   :  miguyam, miguyi, miguyad...
+  âmadan  (to come) → â    :  miâyam, miâyi, miâyad...
+  dânestan(to know) → dân  :  midânam, midâni, midânad...`,
+exercises:[
+  mc("'I go' in Farsi:","miravam",["mikonam","miraftam","beravad"]),
+  mc("'She reads' in Farsi:","mikhânad",["mikhânid","mikhânam","mikhândam"]),
+  fill("'We do' = mi___im","kon","","mikonim"),
+  mc("'They come' in Farsi:","miâyand",["miâyim","miâyad","miâyam"]),
+  fill("'You (inf.) see' = mi___i","bini","","mibini"),
+  mc("The 'mi-' prefix marks:","present / habitual tense",["past tense","future tense","subjunctive"]),
+  fill("'I say' = mi___am","guy","","miguyam"),
+]},
+
+{name:"12. Negation",
+lesson:`Negation rule depends on the tense:
+
+  Present tense — 'ne-' REPLACES 'mi-':
+    mikonam  → nemikonam   (I don't do)
+    miravam  → nemiravam   (I don't go)
+
+  Past tense — 'na-' prefix before the verb:
+    raftam   → naraftam    (I didn't go)
+    kard     → nakard      (he/she didn't do)
+
+  To be — special negative paradigm:
+    hastam → nistam   (I am not)
+    bud    → nabud    (he/she wasn't)
+
+  Imperative — 'na-' WITHOUT 'be-':
+    boro!  → naro!    (don't go!)
+    bekon! → nakon!   (don't do!)`,
+exercises:[
+  mc("'I don't go' in Farsi:","nemiravam",["naraftam","miravam na","bemiravam"]),
+  mc("'She didn't do' in Farsi:","nakard",["nemikonad","kard na","nakonad"]),
+  fill("'We don't read' = ne___im","mikhân","","nemikhânim"),
+  mc("'Don't go!' (negative imperative):","naro!",["nabaro!","nemiro!","naborid!"]),
+  fill("'He was not' = na___","bud","","nabud"),
+  mc("Present tense negation prefix:","ne- (replaces mi-)",["na-","bi-","nist-"]),
+  fill("'I didn't see' = na___am","did","","nadidam"),
+]},
+
+{name:"13. Past Tense",
+lesson:`Formation:  PAST STEM  +  personal ending   (NO mi- prefix)
+
+Past stem = infinitive minus -an (usually):
+  kardan→kard   raftan→raft   khândan→khând
+  didan→did     goftan→goft   âmadan→âmad
+  dâshtan→dâsht  zadan→zad   budan→bud
+
+Personal endings: -am, -i, Ø (3rd sg), -im, -id, -and
+  raftam, rafti, raft, raftim, raftid, raftand
+
+Key: 3rd person singular has NO ending — just the bare stem:
+  raft = he/she/it went    kard = he/she/it did
+
+Negative: na- + past stem:
+  naraftam (I didn't go),  nakard (he/she didn't do)`,
+exercises:[
+  mc("'She went' in Farsi:","raft",["raftam","raftid","rafti"]),
+  mc("'We did' in Farsi:","kardim",["kardam","kardand","kardid"]),
+  fill("'They read' = khând___","and","","khândand"),
+  mc("'I didn't come' in Farsi:","nayâmadam",["namiâyam","nayâmad","nemiâmadam"]),
+  fill("'You (inf.) saw' = did___","i","","didi"),
+  mc("Past stem of 'goftan' (to say):","goft",["gu","guf","gofte"]),
+  fill("'He didn't do' = na___","kard","","nakard"),
+]},
+
+{name:"14. Future Tense",
+lesson:`Formation:  conjugated khâstan (no mi-)  +  past stem of main verb
+
+Auxiliary conjugation:
+  khâham / khâhi / khâhad / khâhim / khâhid / khâhand
+
+Examples:
+  khâham raft    = I will go
+  khâhad kard    = he/she will do
+  khâhim khând   = we will read
+  khâhand did    = they will see
+
+Negative — na- before khâh-:
+  nakhâham raft  = I will not go
+
+Spoken tip: Present tense is commonly used for near future:
+  fardâ miram  =  I'm going tomorrow  (lit. tomorrow I go)`,
+exercises:[
+  mc("'I will go' in Farsi:","khâham raft",["khâham raftan","miravam","beravad"]),
+  mc("'She will do' in Farsi:","khâhad kard",["khâhim kard","khâhad kardan","mikonad"]),
+  fill("'We will read' = khâhim ___","khând"),
+  mc("'I will not go' in Farsi:","nakhâham raft",["nemiravam","namiravad","benaravam"]),
+  fill("'They will see' = khâh___ did","and","","khâhand did"),
+  mc("In spoken Farsi, near future is often expressed with:","present tense",["a separate future suffix","past tense","subjunctive only"]),
+  fill("'You will do' = khâh___ kard","i","","khâhi kard"),
+]},
+
+{name:"15. Subjunctive Mood",
+lesson:`Formation:  be-  +  PRESENT STEM  +  personal endings
+Personal endings: -am, -i, -ad, -im, -id, -and
+
+  kardan → bekonam, bekoni, bekonad, bekonim, bekonid, bekonand
+  raftan → beravam, beravi, beravad, beravim, beravid, beravand
+  âmadan → biyâyam, biyâyi, biyâyad, biyâyim, biyâyid, biyâyand
+
+Triggers for subjunctive:
+  mikhâham  (I want):  mikhâham bekonam    (I want to do it)
+  bâyad     (must):    bâyad beravi         (you must go)
+  shâyad    (maybe):   shâyad biyâyad       (he/she might come)
+  Also after: tâ (so that), nemitavânestan (to be unable), etc.
+
+Negative — drop be-, add na-:
+  nakonam (that I not do),  naravam (that I not go)`,
+exercises:[
+  mc("'that I do' (subjunctive):","bekonam",["mikonam","konam","bekonid"]),
+  mc("'you must go' = bâyad ___:","beravi",["miravi","raftam","beravid"]),
+  fill("'I want to read' = mikhâham be___am","khân","","mikhâham bekhânam"),
+  mc("'maybe he comes' = shâyad ___:","biyâyad",["miâyad","âmad","biyâyid"]),
+  fill("Negative subjunctive: drop be-, add ___ before the stem","na-"),
+  mc("'bâyad' means:","must / should",["maybe","I want","I can"]),
+  fill("'that we not go' = na___im","rav","","naravim"),
+]},
+
+{name:"16. Imperative Mood",
+lesson:`Singular (informal):  be-  +  present stem
+  boro!     = go!          bekon!    = do!
+  bekhân!   = read!        biyâ!     = come!
+  bebin!    = look / see!  bekhâb!   = sleep!
+  beneshín! = sit down!
+
+Plural / formal:  be-  +  present stem  +  -id
+  borid!     = go! (pl.)   bekonid!  = do! (pl.)
+  bekhânid!  = read! (pl.)
+
+Negative imperative:  na-  +  present stem  (NO be-)
+  naro!     = don't go!    nakon!    = don't do!
+  nakhân!   = don't read!  nayâ!     = don't come!`,
+exercises:[
+  mc("'Go!' (singular informal):","boro!",["naro!","beravad!","raft!"]),
+  mc("'Do it!' (plural/formal):","bekonid!",["bekonam!","nakon!","bekonad!"]),
+  fill("'Read!' (singular) = be___!","khân","","bekhân!"),
+  mc("'Don't come!' (neg. imperative):","nayâ!",["biyâ!","nemiâyi!","nabiyâ!"]),
+  fill("'Look / See!' (singular) = be___!","bin","","bebin!"),
+  mc("Negative imperative is formed with:","na- + stem (no be-)",["be- + na- + stem","ne- + stem","stem + -ma"]),
+  fill("'Don't sleep!' = na___!","khâb","","nakhâb!"),
+]},
+
+{name:"17. Progressive Aspect",
+lesson:`Formation:  dâshtan (conjugated)  +  full present tense verb
+Expresses an action in progress right NOW.
+
+  dâram  mikonam   = I am doing
+  dâri   mikoni    = you are doing
+  dârad  mikonad   = he/she is doing
+  dârim  mikonim   = we are doing
+  dârid  mikonid   = you (pl.) are doing
+  dârand mikonand  = they are doing
+
+Past progressive:  past of dâshtan  +  present tense verb
+  dâshtam mikardam  = I was doing
+  dâsht   miraft    = he/she was going
+
+Negative — negate dâshtan:
+  nadâram miravam  = I am not going`,
+exercises:[
+  mc("'I am going' in Farsi:","dâram miravam",["miravam","dâram raftan","dâshtam miravam"]),
+  mc("'She is reading' in Farsi:","dârad mikhânad",["mikhânad","dârad khândan","dârad mikhânid"]),
+  fill("'We are doing' = dârim mi___im","kon","","dârim mikonim"),
+  mc("'I was eating' in Farsi:","dâshtam mikhordam",["dâram mikhordam","dâshtam khordam","mikhordam"]),
+  fill("'They are coming' = dârand mi___and","ây","","dârand miâyand"),
+  mc("Progressive is formed with:","dâshtan + present tense verb",["mi- prefix alone","bâyad + verb","be- + stem"]),
+  fill("'You are not going' = na___i miravi","dâr","","nadâri miravi"),
+]},
+
+{name:"18. Present Perfect",
+lesson:`Formation:  PAST PARTICIPLE  +  present enclitic of budan
+
+Past participle  =  past stem  +  -e:
+  raft→rafte   kard→karde   did→dide
+  khând→khânde   âmad→âmade   goft→gofte
+
+Present enclitics: -am, -i, -e/-ast (3rd sg), -im, -id, -and
+
+  rafte-am  = I have gone
+  karde-i   = you have done
+  dide      = he/she has seen   (or dide-ast)
+  rafte-im  = we have gone
+  karde-id  = you (pl.) have done
+  dide-and  = they have seen
+
+Negative — na- before the past participle:
+  narafte-am  = I have not gone`,
+exercises:[
+  mc("Past participle of 'raftan' (to go):","rafte",["raft","raftan","rafter"]),
+  mc("'I have gone' in Farsi:","rafte-am",["raftam","miravad","beravad"]),
+  fill("'She has done' = karde-___","ast","3rd person singular; plain 'karde' is also fine"),
+  mc("'We have read' in Farsi:","khânde-im",["khândam","mikhânim","khânde-and"]),
+  fill("Past participle of 'didan' (to see) = ___","dide"),
+  mc("'I have not come' = ?","nayâmade-am",["namiâyam","nayâmadam","nabiyâyam"]),
+  fill("'They have seen' = dide-___","and"),
+]},
+
+{name:"19. Past Perfect",
+lesson:`Formation:  PAST PARTICIPLE  +  past of budan
+
+Past of budan: budam / budi / bud / budim / budid / budand
+
+  rafte budam   = I had gone
+  karde budi    = you had done
+  dide bud      = he/she had seen
+  khânde budim  = we had read
+  rafte budid   = you (pl.) had gone
+  karde budand  = they had done
+
+Used for actions completed BEFORE another past action:
+  vaghti âmadam, Ali rafte bud.
+  = When I arrived, Ali had already gone.
+
+Negative:  na-  +  past participle  +  budan:
+  narafte budam  = I had not gone`,
+exercises:[
+  mc("'I had gone' in Farsi:","rafte budam",["raftam","rafte-am","bude raftam"]),
+  mc("'She had read' in Farsi:","khânde bud",["khând","khânde-ast","khândam"]),
+  fill("'We had done' = karde ___im","bud","","karde budim"),
+  mc("'They had seen' in Farsi:","dide budand",["dide-and","did budand","dide budan"]),
+  fill("'You had not gone' = na___ budi","rafte"),
+  mc("Past perfect describes:","an action completed before another past event",["a current action","a future action","a habitual action"]),
+  fill("'He had come' = âmade ___","bud","","âmade bud"),
+]},
+
+{name:"20. Passive Voice",
+lesson:`Formation:  PAST PARTICIPLE  +  shodan (to become)
+
+  Present passive:  xânde mishavad     = it is read / being read
+  Past passive:     xânde shod         = it was read
+  Future passive:   xânde khâhad shod  = it will be read
+  Perfect passive:  xânde shode-ast    = it has been read
+
+shodan — present:
+  mishavam, mishavi, mishavad, mishavim, mishavid, mishavand
+shodan — past:
+  shodam, shodi, shod, shodim, shodid, shodand
+
+To express the agent (by…):  be vasile-ye + noun
+  ketâb be vasile-ye Ali xânde shod.
+  = The book was read by Ali.`,
+exercises:[
+  mc("'The door was opened' = ?","dar bâz shod",["dar bâz kard","dar bâz mishod","dar bâz konad"]),
+  fill("'It is written' = neveshte mi___ad","shav","","neveshte mishavad"),
+  mc("'The book will be read' = ?","ketâb xânde khâhad shod",["ketâb xânde mishavad","ketâb xânde shod","ketâb xânde bud"]),
+  fill("Passive voice uses past participle + ___","shodan"),
+  mc("'By Ali' (agent) in Farsi:","be vasile-ye Ali",["az Ali","bâ Ali","barâye Ali"]),
+  fill("'It has been done' = karde shode-___","ast"),
+  mc("Passive in Farsi uses:","past participle + shodan",["past participle + kardan","mi- + past stem","be- + stem + shodan"]),
+]},
+
+{name:"21. Question Formation",
+lesson:`YES/NO questions — two ways:
+  1. Add 'âyâ' at the start (formal):
+       âyâ miâyi?    = Are you coming?
+  2. Rising intonation alone (spoken):
+       miâyi?         = Are you coming?
+
+QUESTION WORDS (WH-questions):
+  chi / che  = what       ki       = who
+  kojâ       = where      key      = when
+  cheghadr   = how much   chetour  = how
+  cherâ      = why        chand    = how many
+
+Word order stays SOV even in questions!
+  Ali kojâ raft?     = Where did Ali go?   (Ali where went?)
+  chi khândi?        = What did you read?
+  cherâ nayâmadi?    = Why didn't you come?`,
+exercises:[
+  mc("'Where did Ali go?':","Ali kojâ raft?",["kojâ Ali raft?","Ali raft kojâ?","kojâ raft Ali?"]),
+  mc("'What did you read?':","chi khândi?",["chi mikhâni?","che khândid?","chi khândam?"]),
+  fill("'Why didn't you come?' = ___ nayâmadi?","cherâ"),
+  mc("Yes/no questions can be formed with:","âyâ at start OR rising intonation",["only âyâ","only rising intonation","a special verb suffix"]),
+  fill("'Who came?' = ___ âmad?","ki"),
+  mc("'How much does it cost?':","cheghadr ast?",["chetour ast?","cherâ ast?","chand ast?"]),
+  fill("'When will you come?' = ___ miâyi?","key"),
+]},
+
+{name:"22. Compound Verbs",
+lesson:`Compound verb  =  noun / adjective  +  light verb  (very common!)
+
+With kardan (to do / make):
+  kâr kardan      = to work        telefon kardan  = to call
+  tamiz kardan    = to clean       hess kardan     = to feel
+
+With shodan (to become):
+  xaste shodan    = to get tired   gom shodan      = to get lost
+  xoshhal shodan  = to become happy   âsheq shodan = to fall in love
+
+With dâshtan (states / feelings):
+  dust dâshtan    = to like / love     yâd dâshtan = to remember
+
+With zadan (idiomatic uses):
+  harf zadan      = to speak       dam zadan       = to rest
+
+NEGATION goes on the light verb:
+  kâr nemikonam  = I'm not working   (NOT: nakâr mikonam)`,
+exercises:[
+  mc("'to work' in Farsi:","kâr kardan",["kâr budan","kâr shodan","kâr zadan"]),
+  mc("'to get tired' in Farsi:","xaste shodan",["xaste kardan","xaste dâshtan","xaste budan"]),
+  fill("'to speak' = harf ___","zadan"),
+  mc("'I like/love him' in Farsi:","u râ dust dâram",["u râ dust mikonam","u râ dust misham","u dust dâshtam"]),
+  fill("'I am not working' = kâr ne___am","mikonam","","kâr nemikonam — negation goes on the light verb"),
+  mc("'to call (by phone)' in Farsi:","telefon kardan",["telefon zadan","telefon shodan","telefon dâshtan"]),
+  fill("'to get lost' = gom ___","shodan"),
+]},
+
+{name:"23. Relative Clauses",
+lesson:`Relative clauses use 'ke' (that / who / which).
+The antecedent noun often takes '-i' (indefiniteness marker).
+
+  mard-i ke âmad          = the man who came
+  ketâb-i ke khândam      = the book that I read
+  zan-i ke dust dâram     = the woman whom I like
+  chizi ke goftam         = the thing that I said
+
+'ke' also introduces complement clauses after verbs:
+  mibinam ke miâyi.       = I see that you are coming.
+  fekr mikonam ke raft.   = I think that he went.
+
+Rules:
+  - The relative clause comes IMMEDIATELY after its noun
+  - The verb inside stays at the end of the relative clause`,
+exercises:[
+  mc("'the man who came':","mard-i ke âmad",["mard ke âmad","mard âmad ke","ke mard âmad"]),
+  fill("'the book that I read' = ketâb-i ___ khândam","ke"),
+  mc("'ke' in relative clauses means:","that / who / which",["and","but","because"]),
+  fill("'I think that...' = fekr mikonam ___...","ke"),
+  mc("'the woman I like' = ?","zan-i ke dust dâram",["zan ke dâram dust","zan-i dust dâram ke","ke zan-i dust dâram"]),
+  fill("The antecedent in a relative clause often takes suffix: ___","-i"),
+  mc("Where does the relative clause go?","immediately after the noun it modifies",["at the start of the sentence","at the end of the sentence","before the subject"]),
+]},
+
+{name:"24. Conditional Sentences",
+lesson:`'agar' (if) introduces the conditional clause.
+
+REAL / POSSIBLE  (agar + subjunctive  →  present or future):
+  agar biyâyi, khoshhâl misham.
+  = If you come, I'll be happy.
+
+UNREAL / HYPOTHETICAL PRESENT  (agar + past  →  result + -i):
+  agar miâmadi, khoshhâl mishodi.
+  = If you came (hypothetically), I'd be happy.
+
+PAST UNREAL  (agar + past perfect  →  past conditional):
+  agar âmade budi, khoshhâl shode budam.
+  = If you had come, I would have been happy.
+
+Useful:
+  vagarna / dar gheyrelinsurat = otherwise
+  vali / ammâ = but`,
+exercises:[
+  mc("'If you come, I'll be happy' uses:","agar + subjunctive",["agar + past tense","agar + future khâham","agar + imperative"]),
+  fill("'if' in Farsi = ___","agar"),
+  mc("'agar miâmadi, khoshhâl mishodi' expresses:","an unreal/hypothetical present condition",["a real future condition","a past fact","a command"]),
+  fill("'If you had come…' = agar âmade ___, khoshhâl shode budam","budi"),
+  mc("Real/possible conditions use which mood?","subjunctive",["imperative","plain past tense","future tense"]),
+  fill("Past unreal conditionals: agar + ___ perfect","past"),
+  mc("'agar nemiâyi, namiram' means:","if you don't come, I won't go",["if you came, I went","if you will come, go","come or I won't go"]),
+]},
+
+];
+
+// ── Game Actions ──────────────────────────────────────────────
+
+function goMenu(){S.screen='menu';render()}
+function goTopics(){S.screen='topics';render()}
+
+function goLesson(i){
+  S.topicIdx=i;
+  S.screen='lesson';
+  render();
+}
+
+function startStudy(){
+  S.mode='study';
+  S.exercises=shuffle([...TOPICS[S.topicIdx].exercises]);
+  S.exIdx=0;S.score=0;
+  beginExercise();
+}
+
+function startPractice(){
+  S.mode='practice';
+  const weak=TOPICS.filter(t=>(progress[t.name]||{}).last<80||(progress[t.name]||{}).last===undefined);
+  const pool=weak.length?weak:TOPICS;
+  let exs=[];
+  pool.forEach(t=>t.exercises.forEach(e=>exs.push(e)));
+  S.exercises=shuffle(exs).slice(0,12);
+  S.topicIdx=-1;S.exIdx=0;S.score=0;
+  beginExercise();
+}
+
+function beginExercise(){
+  const ex=S.exercises[S.exIdx];
+  S.answered=false;S.correct=false;S.chosenMC='';S.fillVal='';
+  if(ex.kind==='mc') S.choices=shuffle([...ex.choices]);
+  if(ex.kind==='scr'){
+    S.pool=shuffle(ex.answer.split(' '));
+    S.built=[];
+  }
+  S.screen='exercise';
+  render();
+}
+
+function submitMC(chosen){
+  if(S.answered)return;
+  const ex=S.exercises[S.exIdx];
+  S.chosenMC=chosen;
+  S.correct=(chosen===ex.answer);
+  if(S.correct)S.score++;
+  S.answered=true;render();
+}
+
+function submitFill(){
+  if(S.answered)return;
+  const ex=S.exercises[S.exIdx];
+  const val=document.getElementById('fill-in').value.trim();
+  S.fillVal=val;
+  S.correct=normalize(val)===normalize(ex.answer);
+  if(S.correct)S.score++;
+  S.answered=true;render();
+}
+
+function scrClick(i,from){
+  if(S.answered)return;
+  if(from==='pool'){S.built.push(S.pool.splice(i,1)[0]);}
+  else{S.pool.push(S.built.splice(i,1)[0]);}
+  render();
+}
+
+function submitScr(){
+  if(S.answered)return;
+  const ex=S.exercises[S.exIdx];
+  S.correct=normalize(S.built.join(' '))===normalize(ex.answer);
+  if(S.correct)S.score++;
+  S.answered=true;render();
+}
+
+function nextEx(){
+  S.exIdx++;
+  if(S.exIdx>=S.exercises.length) finishSession();
+  else beginExercise();
+}
+
+function finishSession(){
+  if(S.mode==='study'){
+    const t=TOPICS[S.topicIdx];
+    const pct=Math.round(100*S.score/S.exercises.length);
+    const rec=progress[t.name]||{attempts:0,best:0,last:0};
+    rec.attempts=(rec.attempts||0)+1;
+    rec.best=Math.max(rec.best||0,pct);
+    rec.last=pct;
+    progress[t.name]=rec;
+    saveProgress();
+  }
+  S.screen='results';render();
+}
+
+// ── Render ────────────────────────────────────────────────────
+
+function render(){
+  const app=document.getElementById('app');
+  if(S.screen==='menu')   app.innerHTML=rMenu();
+  if(S.screen==='topics') app.innerHTML=rTopics();
+  if(S.screen==='lesson') app.innerHTML=rLesson();
+  if(S.screen==='exercise') app.innerHTML=rExercise();
+  if(S.screen==='results')  app.innerHTML=rResults();
+  if(S.screen==='prog')    app.innerHTML=rProg();
+  bind();
+}
+
+function rMenu(){
+  const done=TOPICS.filter(t=>progress[t.name]).length;
+  const mastered=TOPICS.filter(t=>(progress[t.name]||{}).best>=80).length;
+  const pct=Math.round(100*done/TOPICS.length);
+  return `
+  <div class="hdr">
+    <h1>Farsi Grammar Master</h1>
+    <div class="sub">یادگیری دستور زبان فارسی</div>
+  </div>
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><div class="stat-n">${done}/${TOPICS.length}</div><div class="stat-l">Topics Studied</div></div>
+      <div class="stat"><div class="stat-n">${mastered}</div><div class="stat-l">Mastered (≥80%)</div></div>
+    </div>
+    <div class="section-title">Overall Progress</div>
+    <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <button class="btn btn-primary btn-block" onclick="goTopics()">📖  Study a Topic</button>
+    <button class="btn btn-secondary btn-block" onclick="startPractice()">🎯  Practice Weak Areas</button>
+    <button class="btn btn-secondary btn-block" onclick="S.screen='prog';render()">📊  View Progress</button>
+  </div>`;
+}
+
+function rTopics(){
+  const rows=TOPICS.map((t,i)=>{
+    const rec=progress[t.name]||{};
+    const best=rec.best!=null?rec.best:-1;
+    let badge,cls='';
+    if(best<0){badge=`<span class="badge badge-new">new</span>`;}
+    else if(best>=80){badge=`<span class="badge badge-great">★ ${best}%</span>`;cls='mastered';}
+    else{badge=`<span class="badge badge-ok">${best}%</span>`;}
+    return `<div class="topic-row ${cls}" onclick="goLesson(${i})">
+      <span class="topic-name">${esc(t.name)}</span>${badge}</div>`;
+  }).join('');
+  return `
+  <div class="hdr"><h1>Select a Topic</h1></div>
+  <button class="back-btn" onclick="goMenu()">← Back</button>
+  <div class="card">${rows}</div>`;
+}
+
+function rLesson(){
+  const t=TOPICS[S.topicIdx];
+  const rec=progress[t.name]||{};
+  return `
+  <div class="hdr"><h1>${esc(t.name)}</h1></div>
+  <button class="back-btn" onclick="goTopics()">← Back to Topics</button>
+  <div class="card">
+    <div class="section-title">Lesson</div>
+    <div class="lesson-box">${esc(t.lesson)}</div>
+    <button class="btn btn-primary btn-block" onclick="startStudy()" style="margin-top:4px">
+      Start Exercises →
+    </button>
+    ${rec.best!=null?`<div style="text-align:center;margin-top:10px;font-size:.82rem;color:#888">Best score: ${rec.best}%  · Attempts: ${rec.attempts||0}</div>`:''}
+  </div>`;
+}
+
+function rExercise(){
+  const ex=S.exercises[S.exIdx];
+  const total=S.exercises.length;
+  const pct=Math.round(100*S.exIdx/total);
+  const typeLabel={mc:'Multiple Choice',fill:'Fill in the Blank',scr:'Unscramble'}[ex.kind];
+  const typeCls={mc:'ex-mc',fill:'ex-fill',scr:'ex-scr'}[ex.kind];
+  const topicName=S.mode==='practice'&&S.topicIdx<0?'Practice':'';
+
+  let inputHtml='';
+  if(ex.kind==='mc'){
+    inputHtml=S.choices.map(c=>{
+      let cls='choice';
+      if(S.answered){
+        if(c===ex.answer) cls+=' correct';
+        else if(c===S.chosenMC) cls+=' wrong';
+      }
+      return `<button class="${cls}" ${S.answered?'disabled':''} onclick="submitMC('${esc(c)}')">${esc(c)}</button>`;
+    }).join('');
+  } else if(ex.kind==='fill'){
+    const cls=S.answered?(S.correct?'correct':'wrong'):'';
+    inputHtml=`<input class="fill-input ${cls}" id="fill-in" type="text" placeholder="Type your answer…"
+      ${S.answered?`disabled value="${esc(S.fillVal)}"`:''} onkeydown="if(event.key==='Enter'&&!${S.answered})submitFill()">
+      ${!S.answered?`<button class="btn btn-primary" style="margin-top:10px;width:100%" onclick="submitFill()">Submit</button>`:''}`;
+  } else {
+    const poolHtml=S.pool.map((w,i)=>
+      `<span class="chip chip-pool" onclick="scrClick(${i},'pool')">${esc(w)}</span>`).join('');
+    const builtHtml=S.built.map((w,i)=>
+      `<span class="chip chip-built" onclick="scrClick(${i},'built')">${esc(w)}</span>`).join('');
+    inputHtml=`
+      <div class="scr-label">Word Pool — click to add</div>
+      <div class="chips">${poolHtml||'<span style="color:#ccc;font-size:.85rem">all words placed</span>'}</div>
+      <hr class="scr-divider">
+      <div class="scr-label">Your Answer — click to remove</div>
+      <div class="chips">${builtHtml||'<span style="color:#ccc;font-size:.85rem">tap words above</span>'}</div>
+      ${!S.answered?`<button class="btn btn-primary" style="margin-top:10px;width:100%" onclick="submitScr()" ${S.built.length===0?'disabled':''}>Submit</button>`:''}`;
+  }
+
+  const feedbackHtml=S.answered?`
+    <div class="feedback ${S.correct?'ok':'bad'}">
+      <div class="feedback-title">${S.correct?'✓ Correct!':'✗ Not quite.'}</div>
+      ${!S.correct?`<div class="feedback-answer">Answer: <strong>${esc(ex.answer)}</strong></div>`:''}
+      ${ex.expl?`<div class="feedback-expl">${esc(ex.expl)}</div>`:''}
+    </div>
+    <button class="btn btn-primary" style="margin-top:12px;width:100%" onclick="nextEx()">
+      ${S.exIdx+1<total?'Next Question →':'See Results →'}
+    </button>`:'';
+
+  return `
+  <div class="hdr">
+    <h1>${topicName||esc(TOPICS[S.topicIdx]?.name)||'Practice'}</h1>
+  </div>
+  <div class="card">
+    <div class="q-counter">Question ${S.exIdx+1} of ${total} · Score: ${S.score}</div>
+    <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <span class="ex-type ${typeCls}">${typeLabel}</span>
+    <div class="ex-prompt">${esc(ex.prompt).replace(/\n/g,'<br>')}</div>
+    ${ex.hint?`<div class="ex-hint">💡 ${esc(ex.hint)}</div>`:''}
+    ${inputHtml}
+    ${feedbackHtml}
+  </div>`;
+}
+
+function rResults(){
+  const total=S.exercises.length;
+  const pct=Math.round(100*S.score/total);
+  let msg,color;
+  if(pct===100){msg='Perfect score! Excellent mastery.';color='#2e7d32';}
+  else if(pct>=80){msg='Great job! You have a solid grasp of this topic.';color='#1565c0';}
+  else if(pct>=60){msg='Good effort. Review the lesson and try again.';color='#e65100';}
+  else{msg='Keep studying — re-read the lesson and practice more.';color='#c62828';}
+  return `
+  <div class="hdr"><h1>Results</h1></div>
+  <div class="card" style="text-align:center">
+    <div class="result-circle">
+      <div class="result-pct">${pct}%</div>
+      <div class="result-frac">${S.score} / ${total}</div>
+    </div>
+    <div class="result-msg" style="color:${color}"><strong>${msg}</strong></div>
+    <div class="btn-row" style="justify-content:center">
+      ${S.mode==='study'?`<button class="btn btn-secondary" onclick="startStudy()">Try Again</button>
+      <button class="btn btn-secondary" onclick="goLesson(${S.topicIdx})">Back to Lesson</button>`:''}
+      <button class="btn btn-primary" onclick="goMenu()">Main Menu</button>
+    </div>
+  </div>`;
+}
+
+function rProg(){
+  const rows=TOPICS.map(t=>{
+    const rec=progress[t.name];
+    if(!rec) return `<div class="prog-row"><div class="prog-row-name">${esc(t.name)}</div>
+      <div class="prog-meta">Not yet studied</div></div>`;
+    const best=rec.best||0;
+    const barColor=best>=80?'#f9a825':best>=60?'#1565c0':'#c62828';
+    return `<div class="prog-row">
+      <div class="prog-row-name">${esc(t.name)} ${best>=80?'★':''}</div>
+      <div class="mini-bar-wrap"><div class="mini-bar" style="width:${best}%;background:${barColor}"></div></div>
+      <div class="prog-meta">Best: ${best}% · Last: ${rec.last||0}% · Attempts: ${rec.attempts||0}</div>
+    </div>`;
+  }).join('');
+  const mastered=TOPICS.filter(t=>(progress[t.name]||{}).best>=80).length;
+  return `
+  <div class="hdr"><h1>Your Progress</h1></div>
+  <button class="back-btn" onclick="goMenu()">← Back</button>
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><div class="stat-n">${mastered}</div><div class="stat-l">Mastered (≥80%)</div></div>
+      <div class="stat"><div class="stat-n">${TOPICS.filter(t=>progress[t.name]).length}/${TOPICS.length}</div><div class="stat-l">Studied</div></div>
+    </div>
+    ${rows}
+  </div>`;
+}
+
+// ── Event binding (focus fill input after render) ─────────────
+
+function bind(){
+  const fi=document.getElementById('fill-in');
+  if(fi&&!S.answered) fi.focus();
+}
+
+// ── Start ─────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
