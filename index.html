@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persian Farsi — Grammar &amp; Vocabulary</title>
+<style>
+:root {
+  --bg:#1a1a2e; --card:#16213e; --accent:#0f3460; --gold:#e2b96f;
+  --green:#4caf82; --red:#e05c5c; --text:#eaeaea; --muted:#8899aa;
+  --border:#2a3a5a;
+}
+[data-theme="light"] {
+  --bg:#f0f4f8; --card:#ffffff; --accent:#e8eef5; --gold:#9a6f00;
+  --green:#1e7a4a; --red:#c0392b; --text:#1a1a2e; --muted:#5a6a7a;
+  --border:#c5d0de;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px;}
+.header{width:100%;max-width:700px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+h1{font-size:1.7rem;color:var(--gold);letter-spacing:1px;}
+.header-right{display:flex;gap:8px;align-items:center;}
+.icon-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:8px;cursor:pointer;font-size:1rem;transition:all 0.2s;}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold);}
+.streak-badge{background:#2a1a00;border:1px solid var(--gold);color:var(--gold);border-radius:20px;padding:4px 12px;font-size:0.82rem;font-weight:700;}
+[data-theme="light"] .streak-badge{background:#fff8e1;}
+.tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;justify-content:center;}
+.tab-btn{background:var(--accent);border:2px solid var(--border);color:var(--text);padding:8px 18px;border-radius:20px;cursor:pointer;font-size:0.88rem;transition:all 0.2s;}
+.tab-btn:hover{border-color:var(--gold);color:var(--gold);}
+.tab-btn.active{background:var(--gold);color:#1a1a2e;border-color:var(--gold);font-weight:700;}
+.topic-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:20px;max-width:700px;}
+.topic-btn{background:var(--accent);border:2px solid var(--border);color:var(--text);padding:6px 14px;border-radius:18px;cursor:pointer;font-size:0.82rem;transition:all 0.2s;}
+.topic-btn:hover{border-color:var(--gold);color:var(--gold);}
+.topic-btn.active{background:var(--gold);color:#1a1a2e;border-color:var(--gold);font-weight:700;}
+.score-panel{display:flex;gap:10px;margin-bottom:14px;width:100%;max-width:700px;}
+.score-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;text-align:center;flex:1;}
+.score-num{font-size:1.4rem;font-weight:700;color:var(--gold);}
+.score-label{font-size:0.72rem;color:var(--muted);margin-top:1px;}
+.timer-wrap{width:100%;max-width:700px;height:5px;background:var(--border);border-radius:5px;margin-bottom:10px;display:none;}
+.timer-fill{height:100%;background:var(--gold);border-radius:5px;transition:width 1s linear;}
+.game-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:700px;}
+.progress-bar{height:4px;background:var(--border);border-radius:4px;margin-bottom:20px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--gold);border-radius:4px;transition:width 0.4s;}
+.question-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:0.8rem;color:var(--muted);}
+.topic-tag{background:var(--accent);border:1px solid var(--border);border-radius:10px;padding:3px 10px;font-size:0.76rem;color:var(--gold);}
+.question-text{font-size:1.1rem;line-height:1.6;margin-bottom:8px;}
+.farsi-display{font-size:2rem;direction:rtl;text-align:center;padding:14px;background:var(--accent);border-radius:10px;margin:14px 0;color:var(--gold);font-family:'Tahoma','Arial Unicode MS',sans-serif;line-height:1.8;display:flex;align-items:center;justify-content:center;gap:10px;}
+.audio-btn{background:transparent;border:none;cursor:pointer;font-size:1.1rem;opacity:0.7;transition:opacity 0.2s;color:var(--gold);flex-shrink:0;}
+.audio-btn:hover{opacity:1;}
+.transliteration{text-align:center;color:var(--muted);font-style:italic;font-size:0.88rem;margin-bottom:16px;}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.option-btn{background:var(--accent);border:2px solid var(--border);color:var(--text);padding:12px 10px;border-radius:10px;cursor:pointer;font-size:0.92rem;text-align:center;transition:all 0.15s;line-height:1.4;}
+.option-btn:hover:not(:disabled){border-color:var(--gold);filter:brightness(1.15);}
+.option-btn.correct{border-color:var(--green);background:#0d2a1e;color:var(--green);}
+[data-theme="light"] .option-btn.correct{background:#e6f7ee;}
+.option-btn.wrong{border-color:var(--red);background:#2a0d0d;color:var(--red);}
+[data-theme="light"] .option-btn.wrong{background:#fdf0f0;}
+.option-btn:disabled{cursor:default;}
+.option-farsi{font-family:'Tahoma','Arial Unicode MS',sans-serif;font-size:1.2rem;direction:rtl;display:block;}
+.option-latin{font-size:0.76rem;color:var(--muted);margin-top:2px;display:block;}
+.option-num{font-size:0.7rem;color:var(--muted);margin-bottom:2px;display:block;}
+.feedback{margin-top:16px;padding:12px 16px;border-radius:10px;font-size:0.9rem;line-height:1.6;display:none;}
+.feedback.show{display:block;}
+.feedback.correct-fb{background:#0d2a1e;border:1px solid var(--green);color:#a3e8c0;}
+[data-theme="light"] .feedback.correct-fb{background:#e6f7ee;color:#155724;}
+.feedback.wrong-fb{background:#2a0d0d;border:1px solid var(--red);color:#f0a0a0;}
+[data-theme="light"] .feedback.wrong-fb{background:#fdf0f0;color:#721c24;}
+.feedback-title{font-weight:700;margin-bottom:4px;font-size:0.98rem;}
+.next-btn{margin-top:16px;width:100%;background:var(--gold);border:none;color:#1a1a2e;padding:12px;border-radius:10px;font-size:0.98rem;font-weight:700;cursor:pointer;display:none;transition:opacity 0.2s;}
+.next-btn:hover{opacity:0.88;}
+.next-btn.show{display:block;}
+.ref-toggle{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:8px;cursor:pointer;font-size:0.8rem;margin-top:10px;transition:all 0.2s;}
+.ref-toggle:hover{border-color:var(--gold);color:var(--gold);}
+.ref-panel{background:var(--accent);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:8px;font-size:0.83rem;line-height:1.8;display:none;}
+.ref-panel.open{display:block;}
+.ref-panel table{width:100%;border-collapse:collapse;margin-top:8px;}
+.ref-panel td,.ref-panel th{padding:4px 8px;border:1px solid var(--border);text-align:left;}
+.ref-panel th{background:var(--accent);color:var(--gold);font-size:0.78rem;}
+.ref-panel .fa{font-family:'Tahoma',sans-serif;direction:rtl;color:var(--gold);font-size:1rem;}
+.results-screen{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px 28px;text-align:center;max-width:700px;width:100%;display:none;}
+.results-screen.show{display:block;}
+.results-title{font-size:1.7rem;color:var(--gold);margin-bottom:8px;}
+.results-score{font-size:2.8rem;font-weight:700;color:var(--green);margin:14px 0;}
+.results-msg{color:var(--muted);margin-bottom:20px;font-size:0.98rem;}
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px;}
+.btn-primary{background:var(--gold);border:none;color:#1a1a2e;padding:11px 28px;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:opacity 0.2s;}
+.btn-primary:hover{opacity:0.85;}
+.btn-secondary{background:transparent;border:2px solid var(--gold);color:var(--gold);padding:10px 24px;border-radius:10px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-secondary:hover{background:var(--gold);color:#1a1a2e;}
+.btn-danger{background:transparent;border:2px solid var(--red);color:var(--red);padding:10px 24px;border-radius:10px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-danger:hover{background:var(--red);color:#fff;}
+.review-list{text-align:left;margin-top:16px;max-height:360px;overflow-y:auto;}
+.review-item{background:var(--accent);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;font-size:0.88rem;}
+.review-q{color:var(--muted);margin-bottom:4px;}
+.review-farsi{font-family:'Tahoma',sans-serif;font-size:1.3rem;direction:rtl;color:var(--gold);}
+.review-answer{color:var(--green);margin-top:6px;font-weight:600;}
+.review-exp{color:var(--muted);font-size:0.82rem;margin-top:4px;}
+/* VOCAB */
+.flashcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;cursor:pointer;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform 0.15s;user-select:none;width:100%;}
+.flashcard:hover{transform:scale(1.01);}
+.flash-fa{font-family:'Tahoma',sans-serif;font-size:3rem;direction:rtl;color:var(--gold);margin-bottom:12px;}
+.flash-hint{color:var(--muted);font-size:0.85rem;}
+.flash-translit{font-style:italic;color:var(--muted);font-size:1rem;}
+.flash-en{font-size:1.5rem;font-weight:700;color:var(--text);margin-top:6px;}
+.vocab-counter{color:var(--muted);font-size:0.85rem;text-align:center;margin-top:10px;}
+.vocab-nav-row{display:flex;gap:10px;justify-content:center;margin-top:16px;}
+/* CONJ */
+.conj-select{background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:10px;font-size:0.9rem;cursor:pointer;}
+.pronoun-display{font-size:1.4rem;text-align:center;padding:12px;background:var(--accent);border-radius:10px;margin-bottom:16px;color:var(--gold);}
+/* SETTINGS */
+.settings-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;z-index:100;align-items:center;justify-content:center;}
+.settings-overlay.open{display:flex;}
+.settings-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;width:90%;max-width:440px;max-height:90vh;overflow-y:auto;}
+.settings-title{font-size:1.3rem;color:var(--gold);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);}
+.setting-label{font-size:0.92rem;}
+.setting-sub{font-size:0.78rem;color:var(--muted);margin-top:2px;}
+.toggle{position:relative;width:44px;height:24px;cursor:pointer;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:24px;transition:0.3s;}
+.toggle-slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:0.3s;}
+.toggle input:checked + .toggle-slider{background:var(--gold);}
+.toggle input:checked + .toggle-slider:before{transform:translateX(20px);}
+.stats-box{background:var(--accent);border-radius:10px;padding:14px;margin:14px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center;}
+.stat-num{font-size:1.4rem;font-weight:700;color:var(--gold);}
+.stat-lbl{font-size:0.72rem;color:var(--muted);}
+.section{display:none;width:100%;max-width:700px;flex-direction:column;align-items:center;}
+.section.active{display:flex;}
+.subtitle{color:var(--muted);font-size:0.9rem;margin-bottom:16px;}
+.kbd-hint{color:var(--muted);font-size:0.75rem;text-align:center;margin-top:8px;}
+.conj-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;align-items:center;}
+.conj-tense-nav{display:flex;gap:6px;}
+/* WORD ORDER */
+.word-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:60px;padding:14px;background:var(--accent);border-radius:10px;margin-bottom:12px;align-items:flex-start;}
+.answer-area{min-height:56px;border:2px dashed var(--border);border-radius:10px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px;}
+.answer-area.has-words{border-color:var(--gold);}
+.word-chip{background:var(--card);border:2px solid var(--border);border-radius:8px;padding:7px 13px;cursor:pointer;font-family:'Tahoma','Arial Unicode MS',sans-serif;font-size:1.1rem;color:var(--gold);transition:all 0.15s;user-select:none;}
+.word-chip:hover{border-color:var(--gold);transform:translateY(-1px);}
+.word-chip.used{opacity:0.25;cursor:not-allowed;transform:none;}
+.answer-chip{background:var(--gold);color:#1a1a2e;border-radius:8px;padding:7px 13px;cursor:pointer;font-family:'Tahoma','Arial Unicode MS',sans-serif;font-size:1.1rem;transition:all 0.15s;user-select:none;}
+.answer-chip:hover{opacity:0.8;}
+.wo-hint{color:var(--muted);font-size:0.82rem;font-style:italic;margin-bottom:12px;}
+.wo-translation{font-size:1rem;color:var(--text);margin-bottom:8px;font-weight:600;}
+/* PROGRESS TAB */
+.progress-section{width:100%;max-width:700px;}
+.mastery-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;width:100%;}
+.mastery-title{font-size:1.1rem;color:var(--gold);margin-bottom:16px;font-weight:700;}
+.mastery-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.mastery-label{width:140px;font-size:0.82rem;color:var(--muted);flex-shrink:0;}
+.mastery-bar-wrap{flex:1;background:var(--border);border-radius:4px;height:8px;overflow:hidden;}
+.mastery-bar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width 0.5s;}
+.mastery-pct{width:36px;text-align:right;font-size:0.8rem;font-weight:700;color:var(--gold);}
+.overall-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+/* LESSON MODAL */
+.lesson-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;z-index:200;align-items:center;justify-content:center;padding:16px;}
+.lesson-overlay.open{display:flex;}
+.lesson-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;}
+.lesson-topic{font-size:0.8rem;color:var(--muted);margin-bottom:4px;}
+.lesson-title{font-size:1.4rem;color:var(--gold);margin-bottom:16px;font-weight:700;}
+.lesson-body{font-size:0.92rem;line-height:1.8;color:var(--text);}
+.lesson-body b{color:var(--gold);}
+.lesson-eg{background:var(--accent);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'Tahoma',sans-serif;direction:rtl;font-size:1.1rem;color:var(--gold);text-align:center;}
+.lesson-tip{background:#2a1a00;border:1px solid var(--gold);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:0.88rem;color:#e2c98a;}
+[data-theme="light"] .lesson-tip{background:#fff8e1;color:#7a5800;}
+[data-theme="light"] .lesson-eg{color:var(--gold);}
+.lesson-btn-row{display:flex;gap:10px;margin-top:20px;justify-content:flex-end;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🇮🇷 Farsi</h1>
+  <div class="header-right">
+    <span class="streak-badge" id="streakBadge">🔥 0 day streak</span>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <button class="icon-btn" onclick="openSettings()" title="Settings">⚙️</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('grammar')">📖 Grammar</button>
+  <button class="tab-btn" onclick="showTab('vocab')">📝 Vocabulary</button>
+  <button class="tab-btn" onclick="showTab('conj')">🔄 Conjugation</button>
+  <button class="tab-btn" onclick="showTab('wordorder')">🧩 Word Order</button>
+  <button class="tab-btn" onclick="showTab('progress')">📊 Progress</button>
+</div>
+
+<!-- GRAMMAR -->
+<div class="section active" id="tab-grammar">
+  <div class="topic-nav" id="topicNav"></div>
+  <div class="score-panel">
+    <div class="score-box"><div class="score-num" id="scoreNum">0</div><div class="score-label">Score</div></div>
+    <div class="score-box"><div class="score-num" id="questionNum">0/0</div><div class="score-label">Question</div></div>
+    <div class="score-box"><div class="score-num" id="streakNum">0</div><div class="score-label">Streak</div></div>
+  </div>
+  <div class="timer-wrap" id="timerWrap"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+  <div class="game-card" id="gameCard">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="question-meta">
+      <span class="topic-tag" id="topicTag"></span>
+      <span id="diffLabel" style="font-size:0.78rem;color:var(--muted)"></span>
+    </div>
+    <div class="question-text" id="questionText"></div>
+    <div class="farsi-display" id="farsiDisplay">
+      <span id="farsiText"></span>
+      <button class="audio-btn" onclick="speakCurrent()" title="Listen (fa-IR)">🔊</button>
+    </div>
+    <div class="transliteration" id="translit"></div>
+    <div class="options" id="optionsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="feedback-title" id="feedbackTitle"></div>
+      <div id="feedbackBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+    <div style="text-align:center">
+      <button class="ref-toggle" id="refToggle" onclick="toggleRef()">Show Reference</button>
+    </div>
+    <div class="ref-panel" id="refPanel"></div>
+    <div class="kbd-hint">Keys: <b>1–4</b> select &nbsp;|&nbsp; <b>Enter</b> next</div>
+  </div>
+  <div class="results-screen" id="resultsScreen">
+    <div class="results-title">Round Complete!</div>
+    <div class="results-score" id="resultsScore"></div>
+    <div class="results-msg" id="resultsMsg"></div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="restartTopic()">Retry Topic</button>
+      <button class="btn-secondary" onclick="showTopicSelect()">Choose Topic</button>
+      <button class="btn-secondary" id="reviewBtn" onclick="showReview()" style="display:none">Review Mistakes</button>
+    </div>
+    <div class="review-list" id="reviewList" style="display:none"></div>
+  </div>
+</div>
+
+<!-- VOCAB -->
+<div class="section" id="tab-vocab">
+  <p class="subtitle">Tap a card to reveal — build your Farsi vocabulary!</p>
+  <div class="topic-nav" id="vocabCatNav"></div>
+  <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;">
+    <button class="tab-btn active" id="flashModeBtn" onclick="setVocabMode('flash')">Flashcard</button>
+    <button class="tab-btn" id="quizModeBtn" onclick="setVocabMode('quiz')">Quiz</button>
+  </div>
+
+  <div id="flashMode" style="width:100%">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flash-fa" id="flashFa"></div>
+      <div class="flash-hint" id="flashHint">Tap to reveal</div>
+      <div id="flashReveal" style="display:none">
+        <div class="flash-translit" id="flashTranslit"></div>
+        <div class="flash-en" id="flashEn"></div>
+      </div>
+    </div>
+    <div class="vocab-counter" id="vocabCounter"></div>
+    <div class="vocab-nav-row">
+      <button class="btn-secondary" onclick="prevVocab()">← Prev</button>
+      <button class="btn-primary" onclick="nextVocab()">Next →</button>
+    </div>
+  </div>
+
+  <div id="quizMode" style="display:none;width:100%">
+    <div class="game-card" id="vocabQuizCard">
+      <div class="progress-bar"><div class="progress-fill" id="vqProgressFill"></div></div>
+      <div class="question-meta">
+        <span class="topic-tag" id="vqCatTag"></span>
+        <span id="vqNum" style="color:var(--muted);font-size:0.8rem"></span>
+      </div>
+      <div class="farsi-display" id="vqFarsiDisplay">
+        <span id="vqFarsiText"></span>
+        <button class="audio-btn" onclick="speakVocabCurrent()" title="Listen">🔊</button>
+      </div>
+      <div class="transliteration" id="vqTranslit"></div>
+      <div class="question-text" style="margin-bottom:12px">What does this word mean?</div>
+      <div class="options" id="vqOptions"></div>
+      <div class="feedback" id="vqFeedback">
+        <div class="feedback-title" id="vqFeedbackTitle"></div>
+        <div id="vqFeedbackBody"></div>
+      </div>
+      <button class="next-btn" id="vqNextBtn" onclick="nextVocabQuiz()">Next →</button>
+    </div>
+    <div class="results-screen" id="vqResults">
+      <div class="results-title">Vocab Round Done!</div>
+      <div class="results-score" id="vqScore"></div>
+      <div class="results-msg" id="vqMsg"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="startVocabQuiz()">Try Again</button>
+        <button class="btn-secondary" onclick="setVocabMode('flash')">Flashcard Mode</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONJUGATION -->
+<div class="section" id="tab-conj">
+  <p class="subtitle">Practice verb conjugations — choose a verb &amp; tense</p>
+  <div class="conj-controls">
+    <select class="conj-select" id="conjVerbSel" onchange="initConjDrill()"></select>
+    <div class="conj-tense-nav">
+      <button class="tab-btn active" id="conjPresBtn" onclick="setConjTense('present')">Present</button>
+      <button class="tab-btn" id="conjPastBtn" onclick="setConjTense('past')">Past</button>
+    </div>
+  </div>
+  <div class="score-panel">
+    <div class="score-box"><div class="score-num" id="conjScoreNum">0</div><div class="score-label">Score</div></div>
+    <div class="score-box"><div class="score-num" id="conjQNum">0/0</div><div class="score-label">Question</div></div>
+  </div>
+  <div class="game-card" id="conjCard">
+    <div class="progress-bar"><div class="progress-fill" id="conjProgFill"></div></div>
+    <div class="question-meta">
+      <span class="topic-tag" id="conjVerbTag"></span>
+      <span id="conjTenseLabel" style="color:var(--muted);font-size:0.8rem"></span>
+    </div>
+    <div class="question-text">How do you conjugate this verb for:</div>
+    <div class="pronoun-display" id="conjPronoun"></div>
+    <div class="options" id="conjOptions"></div>
+    <div class="feedback" id="conjFb"><div class="feedback-title" id="conjFbTitle"></div><div id="conjFbBody"></div></div>
+    <button class="next-btn" id="conjNextBtn" onclick="nextConjDrill()">Next →</button>
+  </div>
+  <div class="results-screen" id="conjResults">
+    <div class="results-title">Conjugation Complete!</div>
+    <div class="results-score" id="conjResScore"></div>
+    <div class="results-msg" id="conjResMsg"></div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="initConjDrill()">Try Again</button>
+      <button class="btn-secondary" onclick="setConjTense(conjTense==='present'?'past':'present')">Switch Tense</button>
+    </div>
+  </div>
+</div>
+
+<!-- WORD ORDER -->
+<div class="section" id="tab-wordorder">
+  <p class="subtitle">Tap the words in the correct Persian order (SOV)</p>
+  <div class="topic-nav" id="woFilterNav"></div>
+  <div class="score-panel">
+    <div class="score-box"><div class="score-num" id="woScore">0</div><div class="score-label">Score</div></div>
+    <div class="score-box"><div class="score-num" id="woQNum">0/0</div><div class="score-label">Question</div></div>
+  </div>
+  <div class="game-card" id="woCard">
+    <div class="progress-bar"><div class="progress-fill" id="woProgFill"></div></div>
+    <div class="wo-translation" id="woTranslation"></div>
+    <div class="wo-hint" id="woHint"></div>
+    <div style="font-size:0.8rem;color:var(--muted);margin-bottom:6px;">Your answer:</div>
+    <div class="answer-area" id="woAnswerArea"><span style="color:var(--muted);font-size:0.85rem">Tap words below to build the sentence…</span></div>
+    <div style="font-size:0.8rem;color:var(--muted);margin-bottom:6px;">Word bank:</div>
+    <div class="word-pool" id="woWordPool"></div>
+    <div class="feedback" id="woFeedback"><div class="feedback-title" id="woFbTitle"></div><div id="woFbBody"></div></div>
+    <div style="display:flex;gap:10px;margin-top:14px;">
+      <button class="btn-danger" id="woClearBtn" onclick="woClear()" style="flex:1;padding:10px">Clear</button>
+      <button class="btn-primary" id="woCheckBtn" onclick="woCheck()" style="flex:2;padding:10px">Check Answer</button>
+      <button class="next-btn" id="woNextBtn" onclick="woNext()" style="display:none;flex:2;margin-top:0;padding:10px">Next →</button>
+    </div>
+    <div class="kbd-hint">Keys: <b>Enter</b> = check/next</div>
+  </div>
+  <div class="results-screen" id="woResults">
+    <div class="results-title">Word Order Complete!</div>
+    <div class="results-score" id="woResScore"></div>
+    <div class="results-msg" id="woResMsg"></div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="startWordOrder()">Try Again</button>
+      <button class="btn-secondary" onclick="showTab('grammar')">Back to Grammar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="section" id="tab-progress">
+  <div class="mastery-card" style="width:100%;max-width:700px">
+    <div class="mastery-title">Overall Stats</div>
+    <div class="overall-stats">
+      <div class="score-box"><div class="score-num" id="pgTotal">0</div><div class="score-label">Answered</div></div>
+      <div class="score-box"><div class="score-num" id="pgAccuracy">0%</div><div class="score-label">Accuracy</div></div>
+      <div class="score-box"><div class="score-num" id="pgStreak">0</div><div class="score-label">Day Streak</div></div>
+    </div>
+  </div>
+  <div class="mastery-card" style="width:100%;max-width:700px">
+    <div class="mastery-title">Grammar Mastery by Topic</div>
+    <div id="masteryBars"></div>
+  </div>
+</div>
+
+<!-- LESSON MODAL -->
+<div class="lesson-overlay" id="lessonOverlay">
+  <div class="lesson-panel">
+    <div class="lesson-topic" id="lessonTopicLabel"></div>
+    <div class="lesson-title" id="lessonTitle"></div>
+    <div class="lesson-body" id="lessonBody"></div>
+    <div class="lesson-btn-row">
+      <button class="btn-secondary" onclick="closeLessonAndStart()">Skip Lesson →</button>
+      <button class="btn-primary" onclick="closeLessonAndStart()">Got it! Start Quiz →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS OVERLAY -->
+<div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
+  <div class="settings-panel">
+    <div class="settings-title">Settings ⚙️ <button class="icon-btn" onclick="closeSettings()">✕</button></div>
+    <div class="setting-row">
+      <div><div class="setting-label">Dark Mode</div><div class="setting-sub">Toggle dark / light theme</div></div>
+      <label class="toggle"><input type="checkbox" id="darkToggle" onchange="applyTheme(this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">⏱ Timed Mode</div><div class="setting-sub">30 seconds per grammar question</div></div>
+      <label class="toggle"><input type="checkbox" id="timedToggle" onchange="saveTimedSetting()"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">🔔 Sound Effects</div><div class="setting-sub">Chime on correct / wrong answers</div></div>
+      <label class="toggle"><input type="checkbox" id="soundToggle" onchange="ls.set('sound',this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+    <div style="margin-top:16px;margin-bottom:8px;font-size:0.88rem;color:var(--muted)">Your Stats</div>
+    <div class="stats-box">
+      <div><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">Answered</div></div>
+      <div><div class="stat-num" id="statCorrect">0</div><div class="stat-lbl">Correct</div></div>
+      <div><div class="stat-num" id="statStreak">0</div><div class="stat-lbl">Day Streak</div></div>
+    </div>
+    <div class="btn-row" style="flex-direction:column;gap:10px;margin-top:16px">
+      <button class="btn-secondary" onclick="exportProgress()" style="width:100%">⬇ Export Progress (JSON)</button>
+      <label class="btn-secondary" style="width:100%;text-align:center;cursor:pointer">
+        ⬆ Import Progress (JSON)
+        <input type="file" accept=".json" onchange="importProgress(event)" style="display:none">
+      </label>
+      <button class="btn-danger" onclick="confirmReset()" style="width:100%">🗑 Reset All Progress</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  GRAMMAR DATA
+// ============================================================
+const topics = {
+  pronouns:{label:"Pronouns",ref:`<b>Persian Subject Pronouns</b><table><tr><th>Person</th><th>Farsi</th><th>Translit</th><th>Meaning</th></tr><tr><td>1sg</td><td class="fa">من</td><td>man</td><td>I</td></tr><tr><td>2sg</td><td class="fa">تو</td><td>to</td><td>you (informal)</td></tr><tr><td>3sg</td><td class="fa">او / اون</td><td>u / un</td><td>he/she/it</td></tr><tr><td>1pl</td><td class="fa">ما</td><td>mā</td><td>we</td></tr><tr><td>2pl</td><td class="fa">شما</td><td>shomā</td><td>you (formal/pl)</td></tr><tr><td>3pl</td><td class="fa">آنها / اونا</td><td>ānhā / unā</td><td>they</td></tr></table>`,questions:[
+    {q:"What does this pronoun mean?",farsi:"من",translit:"man",options:[{fa:"I",lat:"1st person singular"},{fa:"You",lat:"2nd person"},{fa:"We",lat:"1st person plural"},{fa:"He/She",lat:"3rd person"}],answer:0,explanation:"من (man) means 'I' — the first person singular pronoun in Persian."},
+    {q:"What does this pronoun mean?",farsi:"شما",translit:"shomā",options:[{fa:"He/She",lat:"3rd person"},{fa:"You (formal)",lat:"2nd person formal/plural"},{fa:"They",lat:"3rd person plural"},{fa:"We",lat:"1st person plural"}],answer:1,explanation:"شما (shomā) is the formal/plural 'you'. Use it with strangers, elders, or groups."},
+    {q:"Which pronoun means 'we'?",farsi:"___",translit:"",options:[{fa:"من",lat:"man"},{fa:"تو",lat:"to"},{fa:"ما",lat:"mā"},{fa:"او",lat:"u"}],answer:2,explanation:"ما (mā) means 'we'. Persian has no grammatical gender — او means both he and she."},
+    {q:"What does this pronoun mean?",farsi:"آنها",translit:"ānhā",options:[{fa:"She",lat:"3rd sg."},{fa:"You (plural)",lat:"2nd pl."},{fa:"We",lat:"1st pl."},{fa:"They",lat:"3rd pl."}],answer:3,explanation:"آنها (ānhā) means 'they'. In colloquial speech you'll often hear اونا (unā)."},
+    {q:"Which pronoun is used informally for 'you' (singular)?",farsi:"___",translit:"",options:[{fa:"شما",lat:"shomā — formal"},{fa:"تو",lat:"to — informal"},{fa:"ما",lat:"mā — we"},{fa:"من",lat:"man — I"}],answer:1,explanation:"تو (to) is the informal singular 'you', used with friends and family."},
+    {q:"Persian has a unique feature regarding 3rd person pronouns. What is it?",farsi:"او",translit:"u",options:[{fa:"او only means 'he'",lat:"masculine only"},{fa:"او only means 'she'",lat:"feminine only"},{fa:"او means he, she, AND it",lat:"gender-neutral"},{fa:"او is archaic and unused",lat:"outdated"}],answer:2,explanation:"Persian has NO grammatical gender! او (u) means he, she, and it. Context determines meaning."},
+  ]},
+  verb_to_be:{label:"To Be (هستن)",ref:`<b>Present Tense of 'To Be'</b><table><tr><th>Pronoun</th><th>Farsi</th><th>Translit</th><th>Meaning</th></tr><tr><td>من</td><td class="fa">هستم</td><td>hastam</td><td>I am</td></tr><tr><td>تو</td><td class="fa">هستی</td><td>hasti</td><td>you are</td></tr><tr><td>او</td><td class="fa">هست / است</td><td>hast/-e</td><td>he/she is</td></tr><tr><td>ما</td><td class="fa">هستیم</td><td>hastim</td><td>we are</td></tr><tr><td>شما</td><td class="fa">هستید</td><td>hastid</td><td>you are</td></tr><tr><td>آنها</td><td class="fa">هستند</td><td>hastand</td><td>they are</td></tr></table>`,questions:[
+    {q:"How do you say 'I am'?",farsi:"من ___",translit:"man ___",options:[{fa:"هستم",lat:"hastam"},{fa:"هستی",lat:"hasti"},{fa:"هستیم",lat:"hastim"},{fa:"هستند",lat:"hastand"}],answer:0,explanation:"من هستم (man hastam) = I am. The ending -am marks the 1st person singular."},
+    {q:"What does this sentence mean?",farsi:"ما هستیم",translit:"mā hastim",options:[{fa:"You are",lat:"2nd person"},{fa:"They are",lat:"3rd plural"},{fa:"We are",lat:"1st plural"},{fa:"I am",lat:"1st singular"}],answer:2,explanation:"ما هستیم (mā hastim) = We are. The ending -im marks 1st person plural."},
+    {q:"Fill in the blank: تو ___ خوب (You are good)",farsi:"تو ___ خوب",translit:"to ___ khub",options:[{fa:"هستم",lat:"hastam — I am"},{fa:"هستی",lat:"hasti — you are"},{fa:"هستید",lat:"hastid — formal you"},{fa:"هستند",lat:"hastand — they are"}],answer:1,explanation:"تو هستی خوب — with تو (informal you), use هستی."},
+    {q:"What is the 3rd person plural form of 'to be'?",farsi:"آنها ___",translit:"ānhā ___",options:[{fa:"هستم",lat:"hastam"},{fa:"هستید",lat:"hastid"},{fa:"هستیم",lat:"hastim"},{fa:"هستند",lat:"hastand"}],answer:3,explanation:"آنها هستند (ānhā hastand) = They are. -and marks 3rd person plural."},
+    {q:"Complete: شما ___ معلم (You are a teacher — formal)",farsi:"شما ___ معلم",translit:"shomā ___ mo'allem",options:[{fa:"هستی",lat:"hasti — informal"},{fa:"هستید",lat:"hastid — formal"},{fa:"هستیم",lat:"hastim — we"},{fa:"هست",lat:"hast — he/she"}],answer:1,explanation:"شما هستید (shomā hastid). شما takes هستید — the formal/polite form."},
+  ]},
+  verb_present:{label:"Present Tense",ref:`<b>Present Tense: می + stem + ending</b><br>Endings: -am, -i, -ad, -im, -id, -and<br>Example: رفتن → stem رو<table><tr><th>Pronoun</th><th>Farsi</th><th>Meaning</th></tr><tr><td>من</td><td class="fa">می‌روم</td><td>I go</td></tr><tr><td>تو</td><td class="fa">می‌روی</td><td>you go</td></tr><tr><td>او</td><td class="fa">می‌رود</td><td>he/she goes</td></tr><tr><td>ما</td><td class="fa">می‌رویم</td><td>we go</td></tr><tr><td>شما</td><td class="fa">می‌روید</td><td>you go (formal)</td></tr><tr><td>آنها</td><td class="fa">می‌روند</td><td>they go</td></tr></table>`,questions:[
+    {q:"What does می‌روم mean?",farsi:"می‌روم",translit:"mi-ravam",options:[{fa:"He goes",lat:"3rd person"},{fa:"I go / I am going",lat:"1st person"},{fa:"We go",lat:"1st plural"},{fa:"You go",lat:"2nd person"}],answer:1,explanation:"می‌روم (mi-ravam) = I go / I am going. می is the present prefix. -م (-am) = 1st person singular."},
+    {q:"What is the present tense prefix in Persian?",farsi:"می‌خورم",translit:"mi-khoram (I eat)",options:[{fa:"نه",lat:"negation prefix"},{fa:"می",lat:"present tense prefix"},{fa:"خواهم",lat:"future auxiliary"},{fa:"بود",lat:"past tense marker"}],answer:1,explanation:"می (mi) is the present tense prefix. It attaches before the verb stem."},
+    {q:"Translate: 'She drinks water' — آب=water, خوردن=to drink (stem: خور)",farsi:"او آب ___",translit:"u āb ___",options:[{fa:"می‌خورم",lat:"mi-khoram — I drink"},{fa:"می‌خوری",lat:"mi-khori — you drink"},{fa:"می‌خورد",lat:"mi-khorad — she drinks"},{fa:"می‌خورند",lat:"mi-khorand — they drink"}],answer:2,explanation:"او آب می‌خورد (u āb mi-khorad) = She drinks water. 3rd person singular ending = -د (-ad)."},
+    {q:"What does ما می‌رویم mean?",farsi:"ما می‌رویم",translit:"mā mi-ravim",options:[{fa:"You are going",lat:"2nd pl."},{fa:"I am going",lat:"1st sg."},{fa:"They are going",lat:"3rd pl."},{fa:"We are going",lat:"1st pl."}],answer:3,explanation:"ما می‌رویم (mā mi-ravim) = We are going. -یم (-im) = 1st person plural."},
+    {q:"How do you say 'They speak'? — حرف زدن = to speak",farsi:"آنها ___",translit:"",options:[{fa:"آنها حرف می‌زنند",lat:"they speak ✓"},{fa:"آنها حرف می‌زنم",lat:"incorrect ending"},{fa:"آنها حرف می‌زنید",lat:"you (formal) speak"},{fa:"آنها حرف می‌زنیم",lat:"we speak"}],answer:0,explanation:"آنها حرف می‌زنند (ānhā harf mi-zanand) = They speak. -ند (-and) = 3rd person plural."},
+    {q:"Which sentence means 'You (informal) write'? — نوشتن = to write, stem: نویس",farsi:"___",translit:"",options:[{fa:"تو می‌نویسم",lat:"to mi-nevisam (wrong)"},{fa:"تو می‌نویسی",lat:"to mi-nevisi ✓"},{fa:"تو می‌نویسد",lat:"to mi-nevisad (3rd sg.)"},{fa:"تو می‌نویسند",lat:"to mi-nevisand (3rd pl.)"}],answer:1,explanation:"تو می‌نویسی (to mi-nevisi) = You write. 2nd person singular ending = -ی (-i)."},
+  ]},
+  negation:{label:"Negation",ref:`<b>Negation in Persian</b><br>Present: replace می with نمی<br>To be: هستم → نیستم<table><tr><th>Positive</th><th>Negative</th><th>Meaning</th></tr><tr><td class="fa">می‌روم</td><td class="fa">نمی‌روم</td><td>I don't go</td></tr><tr><td class="fa">می‌خورد</td><td class="fa">نمی‌خورد</td><td>he doesn't eat</td></tr><tr><td class="fa">هستم</td><td class="fa">نیستم</td><td>I am not</td></tr><tr><td class="fa">هستند</td><td class="fa">نیستند</td><td>they are not</td></tr></table>`,questions:[
+    {q:"How do you negate a present tense verb in Persian?",farsi:"می‌روم → ___",translit:"I go → I don't go",options:[{fa:"نه می‌روم",lat:"na mi-ravam"},{fa:"نمی‌روم",lat:"nami-ravam ✓"},{fa:"می‌نروم",lat:"mi-naravam"},{fa:"می‌روم نه",lat:"verb + no"}],answer:1,explanation:"To negate a present tense verb, replace می with نمی. می‌روم (I go) → نمی‌روم (I don't go)."},
+    {q:"What does نمی‌خورم mean?",farsi:"نمی‌خورم",translit:"nami-khoram",options:[{fa:"I eat",lat:"positive"},{fa:"I do not eat",lat:"negative, 1st sg."},{fa:"He does not eat",lat:"negative, 3rd sg."},{fa:"We do not eat",lat:"negative, 1st pl."}],answer:1,explanation:"نمی‌خورم (nami-khoram) = I do not eat. نمی = negative present prefix, -م = 1st sg."},
+    {q:"How do you say 'I am not' (negation of هستم)?",farsi:"من ___",translit:"man ___",options:[{fa:"نمی‌هستم",lat:"nami-hastam (wrong)"},{fa:"نه هستم",lat:"na hastam (wrong)"},{fa:"نیستم",lat:"nistam ✓"},{fa:"هستم نه",lat:"hastam na (wrong)"}],answer:2,explanation:"The negative of هستم is نیستم (nistam). 'To be' uses نیست- for negation, not نمی."},
+    {q:"Translate: 'They are not students' — دانشجو = student",farsi:"آنها دانشجو ___",translit:"ānhā dāneshju ___",options:[{fa:"نیستند",lat:"nistand ✓"},{fa:"نمی‌باشند",lat:"nami-bashand"},{fa:"نیستم",lat:"nistam — I am not"},{fa:"نیستی",lat:"nisti — you are not"}],answer:0,explanation:"آنها دانشجو نیستند = They are not students. نیستند = 3rd person plural of 'to not be'."},
+    {q:"What is the negative of می‌نویسد (he/she writes)?",farsi:"می‌نویسد → ___",translit:"",options:[{fa:"نمی‌نویسد",lat:"nami-nevisad ✓"},{fa:"نه می‌نویسد",lat:"na mi-nevisad"},{fa:"می‌ننویسد",lat:"mi-nanevisad"},{fa:"می‌نویسد نیست",lat:"mi-nevisad nist"}],answer:0,explanation:"می‌نویسد → نمی‌نویسد = he/she does not write. Simply replace می with نمی."},
+  ]},
+  ezafe:{label:"Ezafe Construction",ref:`<b>Ezafe (اضافه): -e / -ye connector</b><br>Links noun+adjective or noun+noun (possession)<br>کتابِ بزرگ = big book &nbsp;|&nbsp; کتابِ علی = Ali's book<br>After vowel: use -ye → خانه‌یِ بزرگ`,questions:[
+    {q:"What is the Ezafe construction used for?",farsi:"کتابِ بزرگ",translit:"ketāb-e bozorg",options:[{fa:"Verb negation",lat:"making verbs negative"},{fa:"Linking noun + adjective/noun",lat:"Ezafe connector -e"},{fa:"Marking plural nouns",lat:"plural suffix"},{fa:"Marking the direct object",lat:"object marker"}],answer:1,explanation:"Ezafe (-e) links a noun to an adjective or another noun. کتابِ بزرگ = big book. Adjective AFTER the noun!"},
+    {q:"How do you say 'Ali's book' using Ezafe?",farsi:"___",translit:"",options:[{fa:"علی کتاب",lat:"Ali ketāb (no ezafe)"},{fa:"کتابِ علی",lat:"ketāb-e Ali ✓"},{fa:"علیِ کتاب",lat:"Ali-e ketāb (reversed)"},{fa:"کتاب علیِ",lat:"ketāb Ali-e"}],answer:1,explanation:"کتابِ علی (ketāb-e Ali) = Ali's book. Thing possessed first, then -e, then possessor."},
+    {q:"In Persian, where does the adjective go relative to the noun?",farsi:"خانه‌یِ بزرگ",translit:"khāne-ye bozorg (big house)",options:[{fa:"Before the noun",lat:"like English"},{fa:"After the noun",lat:"noun + ezafe + adjective ✓"},{fa:"Either position",lat:"flexible"},{fa:"At the end of the sentence",lat:"final position"}],answer:1,explanation:"Adjectives come AFTER the noun: خانه‌یِ بزرگ = big house. Opposite to English!"},
+    {q:"What form of Ezafe is used after a word ending in a vowel?",farsi:"خانه + بزرگ = ___",translit:"khāne + bozorg = ?",options:[{fa:"خانه‌یِ بزرگ",lat:"khāne-ye bozorg ✓"},{fa:"خانه‌ِ بزرگ",lat:"khāne-e bozorg"},{fa:"خانه بزرگ",lat:"khāne bozorg (no ezafe)"},{fa:"خانه‌ای بزرگ",lat:"khāne-i bozorg"}],answer:0,explanation:"When a word ends in a vowel, Ezafe becomes -ye: خانه‌یِ بزرگ (khāne-ye bozorg)."},
+    {q:"Translate 'my red car' — ماشین=car, قرمز=red",farsi:"___",translit:"",options:[{fa:"ماشینِ قرمزِ من",lat:"māshin-e qermez-e man ✓"},{fa:"من قرمز ماشین",lat:"man qermez māshin"},{fa:"قرمز ماشینِ من",lat:"qermez māshin-e man"},{fa:"ماشین من قرمز",lat:"māshin man qermez"}],answer:0,explanation:"ماشینِ قرمزِ من = my red car. Ezafe chain: car-e red-e mine."},
+  ]},
+  plurals:{label:"Plurals",ref:`<b>Plural Formation</b><br>ها- (-hā): universal plural<br>ان- (-ān): formal, animate/people<table><tr><th>Singular</th><th>Plural -hā</th><th>Plural -ān</th></tr><tr><td class="fa">کتاب</td><td class="fa">کتاب‌ها</td><td>—</td></tr><tr><td class="fa">دوست</td><td class="fa">دوست‌ها</td><td class="fa">دوستان</td></tr><tr><td class="fa">معلم</td><td class="fa">معلم‌ها</td><td class="fa">معلمان</td></tr></table>`,questions:[
+    {q:"What is the main plural suffix in Persian?",farsi:"کتاب → کتاب‌ها",translit:"ketāb → ketāb-hā",options:[{fa:"-ها (-hā)",lat:"universal plural ✓"},{fa:"-ان (-ān)",lat:"animate plural only"},{fa:"-ی (-i)",lat:"indefinite marker"},{fa:"-را (-rā)",lat:"direct object marker"}],answer:0,explanation:"ها- (-hā) is the universal plural suffix. It can be added to any noun."},
+    {q:"What does دوست‌ها mean?",farsi:"دوست‌ها",translit:"dust-hā",options:[{fa:"A friend",lat:"singular"},{fa:"My friend",lat:"possessive"},{fa:"Friends",lat:"plural ✓"},{fa:"Good friend",lat:"with adjective"}],answer:2,explanation:"دوست‌ها (dust-hā) = friends. دوست = friend + ها = plural suffix."},
+    {q:"Which is the more formal plural of معلم (teacher)?",farsi:"معلم → ___",translit:"mo'allem → ?",options:[{fa:"معلم‌ها",lat:"mo'allem-hā — colloquial"},{fa:"معلمان",lat:"mo'allemān — formal ✓"},{fa:"معلمی",lat:"mo'allemi — indefinite"},{fa:"معلمات",lat:"mo'allemāt — Arabic form"}],answer:1,explanation:"معلمان (mo'allemān) is the formal plural using -ān, typically for people."},
+    {q:"How do you say 'the houses'? — خانه = house",farsi:"___",translit:"",options:[{fa:"خانه‌ای",lat:"khāne-i — a house"},{fa:"خانه‌ها",lat:"khāne-hā — houses ✓"},{fa:"خانه‌ان",lat:"khāne-ān — not standard"},{fa:"خانه‌یِ",lat:"khāne-ye — ezafe"}],answer:1,explanation:"خانه‌ها (khāne-hā) = houses. Persian has no definite article — context implies definiteness."},
+    {q:"When can you omit the plural suffix in Persian?",farsi:"سه کتاب",translit:"se ketāb (three books)",options:[{fa:"Never — always use ها",lat:"mandatory"},{fa:"After numbers (quantity implicit)",lat:"with numerals ✓"},{fa:"Only with animate nouns",lat:"animate only"},{fa:"Only in formal writing",lat:"formal contexts"}],answer:1,explanation:"After numbers, plural suffix is dropped: سه کتاب = three books. The number implies plurality!"},
+  ]},
+  sentence_structure:{label:"Sentence Structure",ref:`<b>Persian Sentence Structure: SOV</b><br>Subject - Object - Verb (verb at the END)<br>را (-rā): marks definite direct objects<br>من کتاب را خواندم = I read THE book<br>من کتاب خواندم = I read A book`,questions:[
+    {q:"What is the basic word order in Persian?",farsi:"من کتاب می‌خوانم",translit:"man ketāb mi-khānam (I read a book)",options:[{fa:"SVO — like English",lat:"Subject-Verb-Object"},{fa:"SOV — verb at the end",lat:"Subject-Object-Verb ✓"},{fa:"VSO — verb first",lat:"Verb-Subject-Object"},{fa:"OVS — object first",lat:"Object-Verb-Subject"}],answer:1,explanation:"Persian is SOV: Subject-Object-Verb. The verb comes at the END. من کتاب می‌خوانم = I (S) book (O) read (V)."},
+    {q:"What is the function of را (-rā)?",farsi:"من کتاب را خواندم",translit:"man ketāb-rā khāndam",options:[{fa:"It marks the subject",lat:"nominative case"},{fa:"It marks a definite direct object",lat:"accusative marker ✓"},{fa:"It marks possession",lat:"genitive case"},{fa:"It creates a question",lat:"interrogative"}],answer:1,explanation:"را (-rā) marks the definite direct object. With را = THE book; without را = A book."},
+    {q:"Rearrange correctly: 'Ali sees Sara'",farsi:"علی / سارا / را / می‌بیند",translit:"Ali / Sārā / rā / mi-binad",options:[{fa:"علی می‌بیند سارا را",lat:"SVO — wrong"},{fa:"سارا را علی می‌بیند",lat:"OSV — marked"},{fa:"علی سارا را می‌بیند",lat:"SOV ✓"},{fa:"می‌بیند علی سارا را",lat:"VSO — wrong"}],answer:2,explanation:"علی سارا را می‌بیند = Ali sees Sara. Subject + Object + را + Verb."},
+    {q:"When is را NOT used with a direct object?",farsi:"من سیب می‌خورم",translit:"man sib mi-khoram (I eat an apple)",options:[{fa:"When the verb is negative",lat:"negation"},{fa:"When the object is indefinite/non-specific",lat:"indefinite ✓"},{fa:"When the subject is a pronoun",lat:"pronoun subject"},{fa:"را is always required",lat:"always"}],answer:1,explanation:"را is omitted when the object is indefinite: من سیب می‌خورم = I eat an apple (any). من سیب را می‌خورم = I eat THE apple."},
+    {q:"Where do time expressions typically go in a Persian sentence?",farsi:"من فردا تهران می‌روم",translit:"man fardā Tehrān mi-ravam",options:[{fa:"After the verb, at the end",lat:"sentence final"},{fa:"Before the subject",lat:"sentence initial"},{fa:"After the subject, before objects",lat:"pre-object"},{fa:"Both A and C are common",lat:"flexible ✓"}],answer:3,explanation:"Time expressions are flexible in Persian. The verb always stays at the end!"},
+  ]},
+  past_tense:{label:"Past Tense",ref:`<b>Simple Past: past stem + ending</b><br>Past stem = infinitive minus ن<br>رفتن→رفت, خوردن→خورد<br>Endings: -am,-i,∅,-im,-id,-and<table><tr><th>Pronoun</th><th>رفتن</th><th>Meaning</th></tr><tr><td>من</td><td class="fa">رفتم</td><td>I went</td></tr><tr><td>تو</td><td class="fa">رفتی</td><td>you went</td></tr><tr><td>او</td><td class="fa">رفت</td><td>he/she went</td></tr><tr><td>ما</td><td class="fa">رفتیم</td><td>we went</td></tr><tr><td>شما</td><td class="fa">رفتید</td><td>you went</td></tr><tr><td>آنها</td><td class="fa">رفتند</td><td>they went</td></tr></table>Negation: ن- prefix → نرفتم`,questions:[
+    {q:"How do you form the past stem in Persian?",farsi:"رفتن → رفت",translit:"raftan → raft",options:[{fa:"Add می to the verb",lat:"present prefix"},{fa:"Remove the final ن from the infinitive",lat:"drop -n ✓"},{fa:"Add -اد to the root",lat:"add suffix"},{fa:"Use the dictionary form unchanged",lat:"no change"}],answer:1,explanation:"Past stem = infinitive minus ن. رفتن→رفت, خوردن→خورد. Stem + personal endings = simple past."},
+    {q:"What does رفتم mean?",farsi:"رفتم",translit:"raftam",options:[{fa:"I go",lat:"present"},{fa:"I went",lat:"past, 1st sg. ✓"},{fa:"He went",lat:"past, 3rd sg."},{fa:"We went",lat:"past, 1st pl."}],answer:1,explanation:"رفتم (raftam) = I went. Past stem رفت + ending -م (am) = 1st person singular past."},
+    {q:"What does آنها خوردند mean? — خوردن=to eat",farsi:"آنها خوردند",translit:"ānhā khordand",options:[{fa:"They are eating",lat:"present"},{fa:"They ate",lat:"past, 3rd pl. ✓"},{fa:"We ate",lat:"past, 1st pl."},{fa:"You ate",lat:"past, 2nd pl."}],answer:1,explanation:"آنها خوردند (ānhā khordand) = They ate. Past stem خورد + ending -ند (and) = 3rd pl. past."},
+    {q:"How do you negate the past tense? (I did not go)",farsi:"رفتم → ___",translit:"raftam → ?",options:[{fa:"نمی‌رفتم",lat:"nami-raftam (imperfect)"},{fa:"نرفتم",lat:"naraftam ✓"},{fa:"نه رفتم",lat:"na raftam (wrong)"},{fa:"رفتم نه",lat:"raftam na (wrong)"}],answer:1,explanation:"نرفتم (naraftam) = I did not go. Add ن- directly to the past stem. نرفت = he/she didn't go."},
+    {q:"Translate: 'We saw a film' — دیدن=to see (past stem: دید), فیلم=film",farsi:"ما فیلم ___",translit:"mā film ___",options:[{fa:"می‌بینیم",lat:"mi-binim — we see (present)"},{fa:"دیدیم",lat:"didim — we saw ✓"},{fa:"دیدند",lat:"didand — they saw"},{fa:"دیدم",lat:"didam — I saw"}],answer:1,explanation:"ما فیلم دیدیم (mā film didim) = We saw a film. Past stem دید + -یم (im) = 1st pl. past."},
+  ]},
+  future_tense:{label:"Future Tense",lesson:`<b>Formal future:</b> خواهـ (auxiliary) + past stem<br>خواهم/خواهی/خواهد/خواهیم/خواهید/خواهند + past stem<div class="lesson-eg">خواهم رفت — I will go<br>خواهد خورد — He/she will eat</div><b>Negation:</b> نخواهم رفت (I will not go)<div class="lesson-tip">💡 In everyday speech, Iranians rarely use this formal form. Instead they say the present tense + a time word: فردا می‌روم (I'm going tomorrow).</div>`,ref:`<b>Future Tense: خواهـ + past stem</b><table><tr><th>Pronoun</th><th>Farsi</th><th>Meaning</th></tr><tr><td>من</td><td class="fa">خواهم رفت</td><td>I will go</td></tr><tr><td>تو</td><td class="fa">خواهی رفت</td><td>you will go</td></tr><tr><td>او</td><td class="fa">خواهد رفت</td><td>he/she will go</td></tr><tr><td>ما</td><td class="fa">خواهیم رفت</td><td>we will go</td></tr><tr><td>شما</td><td class="fa">خواهید رفت</td><td>you will go</td></tr><tr><td>آنها</td><td class="fa">خواهند رفت</td><td>they will go</td></tr></table>Negation: ن + خواهم = نخواهم رفت`,questions:[
+    {q:"How do you form the formal future tense?",farsi:"خواهم رفت",translit:"khāham raft (I will go)",options:[{fa:"می + present stem",lat:"present formula"},{fa:"خواهـ + past stem",lat:"future formula ✓"},{fa:"بود + infinitive",lat:"past formula"},{fa:"خواهـ + present stem",lat:"wrong combo"}],answer:1,explanation:"Future tense = خواهـ (auxiliary) + past stem. خواهم رفت = I will go. The auxiliary changes per person, the past stem stays the same."},
+    {q:"What does خواهم رفت mean?",farsi:"خواهم رفت",translit:"khāham raft",options:[{fa:"I went",lat:"past"},{fa:"I go",lat:"present"},{fa:"I will go",lat:"future ✓"},{fa:"I have gone",lat:"perfect"}],answer:2,explanation:"خواهم رفت (khāham raft) = I will go. خواهم = future auxiliary (1st sg) + رفت = past stem of رفتن."},
+    {q:"How do you say 'She will eat'? — خوردن past stem: خورد",farsi:"او ___",translit:"",options:[{fa:"خواهم خورد",lat:"I will eat"},{fa:"خواهی خورد",lat:"you will eat"},{fa:"خواهد خورد",lat:"she will eat ✓"},{fa:"خواهیم خورد",lat:"we will eat"}],answer:2,explanation:"او خواهد خورد = She will eat. خواهد is the 3rd person singular future auxiliary."},
+    {q:"How do Iranians typically express the future in everyday speech?",farsi:"فردا می‌روم",translit:"fardā mi-ravam (I'm going tomorrow)",options:[{fa:"Always use خواهـ + past stem",lat:"formal only"},{fa:"Present tense + time expression",lat:"colloquial ✓"},{fa:"Add -id to the verb",lat:"wrong"},{fa:"Use بود + infinitive",lat:"wrong"}],answer:1,explanation:"Colloquially, Iranians use the present tense + a time word: فردا می‌روم (I'm going tomorrow). The formal خواهـ form is mainly written/literary."},
+    {q:"How do you say 'I will not go'?",farsi:"من ___",translit:"",options:[{fa:"نمی‌خواهم رفت",lat:"I don't want to go"},{fa:"نخواهم رفت",lat:"I will not go ✓"},{fa:"نرفتم",lat:"I did not go"},{fa:"نمی‌روم",lat:"I am not going"}],answer:1,explanation:"نخواهم رفت (nakhāham raft) = I will not go. Negate the future by adding ن- directly to the خواهـ auxiliary."},
+  ]},
+  present_perfect:{label:"Present Perfect",lesson:`<b>Formula:</b> past stem + <b>ـه</b> + personal ending<br>رفت + ه → رفته (gone)<div class="lesson-eg">رفته‌ام — I have gone (rafteh-am)<br>خورده‌اند — They have eaten (khordeh-and)</div><b>3rd person singular</b> takes NO extra ending: رفته = he/she has gone.<div class="lesson-tip">💡 Think of ـه as an "-en" ending in English: go → gone, eat → eaten.</div>`,ref:`<b>Present Perfect: past stem + ه + ending</b><table><tr><th>Pronoun</th><th>رفتن</th><th>Meaning</th></tr><tr><td>من</td><td class="fa">رفته‌ام</td><td>I have gone</td></tr><tr><td>تو</td><td class="fa">رفته‌ای</td><td>you have gone</td></tr><tr><td>او</td><td class="fa">رفته</td><td>he/she has gone</td></tr><tr><td>ما</td><td class="fa">رفته‌ایم</td><td>we have gone</td></tr><tr><td>شما</td><td class="fa">رفته‌اید</td><td>you have gone</td></tr><tr><td>آنها</td><td class="fa">رفته‌اند</td><td>they have gone</td></tr></table>`,questions:[
+    {q:"How do you form the present perfect in Persian?",farsi:"رفته‌ام",translit:"rafteh-am (I have gone)",options:[{fa:"می + past stem + ending",lat:"imperfective"},{fa:"Past stem + ه + personal ending",lat:"present perfect ✓"},{fa:"خواهـ + past stem",lat:"future"},{fa:"Past stem alone",lat:"simple past"}],answer:1,explanation:"Present perfect = past stem + ـه + personal ending. رفت (past stem) + ه → رفته + ام = رفته‌ام (I have gone)."},
+    {q:"What does رفته‌ام mean?",farsi:"رفته‌ام",translit:"rafteh-am",options:[{fa:"I went",lat:"simple past"},{fa:"I go",lat:"present"},{fa:"I will go",lat:"future"},{fa:"I have gone",lat:"present perfect ✓"}],answer:3,explanation:"رفته‌ام (rafteh-am) = I have gone. Past stem رفت + ه + -ام (1st sg ending)."},
+    {q:"What does خورده‌اند mean? — خوردن = to eat",farsi:"آنها خورده‌اند",translit:"ānhā khordeh-and",options:[{fa:"They ate",lat:"simple past"},{fa:"They eat",lat:"present"},{fa:"They have eaten",lat:"present perfect ✓"},{fa:"They will eat",lat:"future"}],answer:2,explanation:"آنها خورده‌اند = They have eaten. Past stem خورد + ه + -اند (3rd pl ending)."},
+    {q:"What is special about the 3rd person singular in present perfect?",farsi:"او رفته",translit:"u rafteh",options:[{fa:"It uses است instead of ـه",lat:"different form"},{fa:"It takes NO extra personal ending",lat:"correct ✓"},{fa:"It adds -اد like the simple present",lat:"wrong"},{fa:"It is identical to the past tense",lat:"wrong"}],answer:1,explanation:"3rd person singular (او) takes NO ending: رفته alone = he/she has gone. All others add personal endings: -ام, -ای, -ایم, -اید, -اند."},
+    {q:"Complete: ما فیلم ___ (We have seen a film) — دیدن past stem: دید",farsi:"ما فیلم ___",translit:"",options:[{fa:"دیدیم",lat:"didim — we saw (simple past)"},{fa:"دیده‌ایم",lat:"dideh-im — we have seen ✓"},{fa:"دیده‌اند",lat:"dideh-and — they have seen"},{fa:"دیده‌ام",lat:"dideh-am — I have seen"}],answer:1,explanation:"ما فیلم دیده‌ایم = We have seen a film. Past stem دید + ه + -ایم (1st pl ending)."},
+  ]},
+  question_words:{label:"Question Words",lesson:`Persian question words come <b>before the verb</b> and after the subject.<div class="lesson-eg">کجا می‌روی؟ — Where are you going?<br>چرا نمی‌آیی؟ — Why aren't you coming?</div><b>Key words:</b> چه/چی = what · کی = who · کجا = where · کِی = when · چرا = why · چطور = how · چقدر = how much<div class="lesson-tip">💡 Persian does NOT invert subject-verb for questions! Just add a question word and a rising tone (or ؟).</div>`,ref:`<b>Persian Question Words</b><table><tr><th>Farsi</th><th>Translit</th><th>Meaning</th></tr><tr><td class="fa">چه / چی</td><td>che / chi</td><td>What</td></tr><tr><td class="fa">کی</td><td>ki</td><td>Who</td></tr><tr><td class="fa">کجا</td><td>kojā</td><td>Where</td></tr><tr><td class="fa">کِی</td><td>key</td><td>When</td></tr><tr><td class="fa">چرا</td><td>cherā</td><td>Why</td></tr><tr><td class="fa">چطور</td><td>chetour</td><td>How</td></tr><tr><td class="fa">چقدر</td><td>cheqadr</td><td>How much/many</td></tr></table>`,questions:[
+    {q:"How do you say 'where' in Persian?",farsi:"___ می‌روی؟",translit:"___ mi-ravi? (Where are you going?)",options:[{fa:"چرا",lat:"cherā — why"},{fa:"کِی",lat:"key — when"},{fa:"کجا",lat:"kojā — where ✓"},{fa:"چطور",lat:"chetour — how"}],answer:2,explanation:"کجا (kojā) = where. کجا می‌روی؟ = Where are you going?"},
+    {q:"What does چرا mean?",farsi:"چرا نمی‌آیی؟",translit:"cherā nami-āyi? (Why aren't you coming?)",options:[{fa:"What",lat:"che/chi"},{fa:"Who",lat:"ki"},{fa:"When",lat:"key"},{fa:"Why",lat:"cherā ✓"}],answer:3,explanation:"چرا (cherā) = why. چرا نمی‌آیی؟ = Why aren't you coming?"},
+    {q:"How do you ask 'Who is this?'",farsi:"این ___ است؟",translit:"in ___ ast?",options:[{fa:"چه",lat:"che — what"},{fa:"کی",lat:"ki — who ✓"},{fa:"کجا",lat:"kojā — where"},{fa:"چقدر",lat:"cheqadr — how much"}],answer:1,explanation:"کی (ki) = who. این کی است؟ = Who is this? Note: کی (who) vs کِی (when) — same spelling, different pronunciation/context."},
+    {q:"What does چقدر mean?",farsi:"این چقدر است؟",translit:"in cheqadr ast? (How much is this?)",options:[{fa:"How",lat:"chetour"},{fa:"Why",lat:"cherā"},{fa:"How much / How many",lat:"cheqadr ✓"},{fa:"Where",lat:"kojā"}],answer:2,explanation:"چقدر (cheqadr) = how much / how many. این چقدر است؟ = How much is this? Very useful for shopping!"},
+    {q:"In Persian, where does the question word go in a sentence?",farsi:"تو کجا می‌روی؟",translit:"to kojā mi-ravi?",options:[{fa:"At the very beginning, before the subject",lat:"sentence-initial"},{fa:"After the subject, before the verb",lat:"pre-verbal ✓"},{fa:"At the end of the sentence",lat:"sentence-final"},{fa:"Persian inverts subject and verb for questions",lat:"wrong"}],answer:1,explanation:"Question words go after the subject, before the verb: تو کجا می‌روی؟ = You-where-go? Persian does NOT invert word order for questions."},
+  ]},
+  comparatives:{label:"Comparatives & Superlatives",lesson:`<b>Comparative</b> (bigger, faster): add <b>ـتر</b> (-tar)<br><b>Superlative</b> (biggest, fastest): add <b>ـترین</b> (-tarin)<div class="lesson-eg">بزرگ → بزرگ‌تر → بزرگ‌ترین<br>big → bigger → biggest</div><b>Irregulars:</b> خوب → بهتر → بهترین (good/better/best)<br>بد → بدتر → بدترین (bad/worse/worst)<div class="lesson-tip">💡 "Than" in Persian is از (az): این از آن بزرگ‌تر است = This is bigger than that.</div>`,ref:`<b>Comparatives & Superlatives</b><br>Comparative: + ـتر &nbsp;|&nbsp; Superlative: + ـترین<table><tr><th>Base</th><th>Comparative</th><th>Superlative</th></tr><tr><td class="fa">بزرگ</td><td class="fa">بزرگ‌تر</td><td class="fa">بزرگ‌ترین</td></tr><tr><td class="fa">کوچک</td><td class="fa">کوچک‌تر</td><td class="fa">کوچک‌ترین</td></tr><tr><td class="fa">خوب</td><td class="fa">بهتر</td><td class="fa">بهترین</td></tr><tr><td class="fa">بد</td><td class="fa">بدتر</td><td class="fa">بدترین</td></tr></table>"Than" = از (az)`,questions:[
+    {q:"How do you form the comparative in Persian?",farsi:"بزرگ → بزرگ‌تر",translit:"bozorg → bozorg-tar (big → bigger)",options:[{fa:"Add ـتر to the adjective",lat:"-tar suffix ✓"},{fa:"Add ـترین to the adjective",lat:"-tarin (superlative)"},{fa:"Put بیشتر before the adjective",lat:"wrong construction"},{fa:"Use the ezafe construction",lat:"wrong"}],answer:0,explanation:"Add ـتر (-tar) for the comparative: بزرگ‌تر (bigger), کوچک‌تر (smaller), سریع‌تر (faster)."},
+    {q:"What does بزرگ‌تر mean?",farsi:"بزرگ‌تر",translit:"bozorg-tar",options:[{fa:"Big",lat:"base adjective"},{fa:"Bigger",lat:"comparative ✓"},{fa:"Biggest",lat:"superlative"},{fa:"Very big",lat:"intensified"}],answer:1,explanation:"بزرگ‌تر (bozorg-tar) = bigger. بزرگ = big + ـتر = comparative suffix."},
+    {q:"How do you say 'the best' in Persian?",farsi:"___",translit:"",options:[{fa:"خوب‌تر",lat:"khub-tar — better"},{fa:"خوب‌ترین",lat:"khub-tarin — (wrong irregular)"},{fa:"بهتر",lat:"behtar — better"},{fa:"بهترین",lat:"behtarin — the best ✓"}],answer:3,explanation:"بهترین (behtarin) = the best. خوب (good) is irregular: خوب → بهتر (better) → بهترین (best). Same pattern as English!"},
+    {q:"How do you say 'This house is bigger than that one'? — از = than",farsi:"___",translit:"",options:[{fa:"این خانه بزرگ‌ترین است",lat:"superlative — wrong"},{fa:"این خانه از آن بزرگ‌تر است",lat:"correct ✓"},{fa:"این خانه بزرگ‌تر آن است",lat:"missing از"},{fa:"این خانه از آن بزرگ‌ترین است",lat:"wrong suffix"}],answer:1,explanation:"این خانه از آن بزرگ‌تر است = This house is bigger than that one. Formula: X از Y + comparative + است."},
+    {q:"What is the comparative of بد (bad)?",farsi:"بد → ___",translit:"bad → ?",options:[{fa:"بدتر",lat:"bad-tar — worse ✓"},{fa:"بدترین",lat:"bad-tarin — worst"},{fa:"بهتر",lat:"behtar — better (wrong adj.)"},{fa:"بیشتر",lat:"bishtar — more"}],answer:0,explanation:"بدتر (bad-tar) = worse. بد is NOT irregular — you simply add ـتر. بدترین = worst."},
+  ]},
+  conditionals:{label:"Conditionals (If…)",lesson:`Conditional sentences use <b>اگر</b> (agar) = "if".<br><b>Real condition</b> (likely): اگر + present verb<div class="lesson-eg">اگر وقت داری، بیا — If you have time, come.</div><b>Hypothetical</b> (unlikely/unreal): اگر + past verb + می<div class="lesson-eg">اگر پول داشتم، می‌رفتم — If I had money, I would go.</div><div class="lesson-tip">💡 The hypothetical pattern is like English "If I had…, I would…" — Persian uses past tense for the condition too!</div>`,ref:`<b>Conditional Sentences</b><br>اگر (agar) = if<br><br><b>Real/likely:</b> اگر + present verb + present verb<br>اگر بیایی، خوشحال می‌شوم (If you come, I'll be happy)<br><br><b>Hypothetical/unreal:</b> اگر + past verb + می + past verb<br>اگر پول داشتم، می‌رفتم (If I had money, I would go)`,questions:[
+    {q:"What word starts a conditional sentence in Persian?",farsi:"___ وقت داری، بیا",translit:"___ vaqt dari, biā (If you have time, come)",options:[{fa:"وقتی",lat:"vaqti — when"},{fa:"اگر",lat:"agar — if ✓"},{fa:"چون",lat:"chun — because"},{fa:"ولی",lat:"vali — but"}],answer:1,explanation:"اگر (agar) = if. It starts the condition clause. اگر وقت داری، بیا = If you have time, come."},
+    {q:"Which type of condition is اگر وقت داری، می‌آیم?",farsi:"اگر وقت داری، می‌آیم",translit:"agar vaqt dari, mi-āyam",options:[{fa:"Hypothetical — unlikely to happen",lat:"unreal"},{fa:"Real condition — likely to happen",lat:"real ✓"},{fa:"Past condition — already happened",lat:"past"},{fa:"Future only — not yet known",lat:"future"}],answer:1,explanation:"اگر وقت داری، می‌آیم (If you have time, I'll come) = real condition. Both verbs use present tense because the situation is possible/likely."},
+    {q:"What does اگر پول داشتم، می‌رفتم mean?",farsi:"اگر پول داشتم، می‌رفتم",translit:"agar pul dashtam, mi-raftam",options:[{fa:"If I have money, I'll go",lat:"real condition"},{fa:"If I had money, I would go",lat:"hypothetical ✓"},{fa:"Because I had money, I went",lat:"causal"},{fa:"When I had money, I went",lat:"temporal"}],answer:1,explanation:"اگر پول داشتم، می‌رفتم = If I had money, I would go (but I don't). Hypothetical: past tense in condition + می + past stem in result."},
+    {q:"In a hypothetical conditional, what verb form goes in the result clause?",farsi:"اگر بودم، می‌___",translit:"agar budam, mi-___",options:[{fa:"Present tense verb",lat:"wrong for hypothetical"},{fa:"می + past stem",lat:"correct ✓"},{fa:"خواهـ + past stem",lat:"formal future"},{fa:"Past stem alone",lat:"simple past"}],answer:1,explanation:"The result clause of a hypothetical uses می + past stem (imperfect/counterfactual): می‌رفتم, می‌خوردم, می‌دیدم."},
+    {q:"Which is a correct real conditional sentence?",farsi:"___",translit:"",options:[{fa:"اگر بیایی، خوشحال می‌شوم",lat:"agar biāyi, khoshhāl mi-shavam ✓"},{fa:"اگر می‌آیی، خوشحال شدم",lat:"mixed tenses — wrong"},{fa:"اگر آمدم، خوشحال می‌شوم",lat:"wrong — past in condition"},{fa:"اگر بیا، خوشحال می‌شوم",lat:"wrong imperative"}],answer:0,explanation:"اگر بیایی، خوشحال می‌شوم = If you come, I'll be happy. Real condition: present subjunctive in the if-clause, present tense in result."},
+  ]},
+  common_phrases:{label:"Common Phrases",ref:`<b>Essential Persian Phrases</b><table><tr><th>Farsi</th><th>Translit</th><th>Meaning</th></tr><tr><td class="fa">سلام</td><td>salām</td><td>Hello</td></tr><tr><td class="fa">خداحافظ</td><td>khodāhāfez</td><td>Goodbye</td></tr><tr><td class="fa">ممنون</td><td>mamnun</td><td>Thank you</td></tr><tr><td class="fa">خواهش می‌کنم</td><td>khāhesh mi-konam</td><td>You're welcome / Please</td></tr><tr><td class="fa">ببخشید</td><td>bebakhshid</td><td>Excuse me / Sorry</td></tr><tr><td class="fa">حالت چطوره؟</td><td>hālet chetore?</td><td>How are you? (inf.)</td></tr><tr><td class="fa">بله / نه</td><td>bale / na</td><td>Yes / No</td></tr></table>`,questions:[
+    {q:"What does this word mean?",farsi:"سلام",translit:"salām",options:[{fa:"Goodbye",lat:"farewell"},{fa:"Hello",lat:"greeting ✓"},{fa:"Thank you",lat:"gratitude"},{fa:"Please",lat:"request"}],answer:1,explanation:"سلام (salām) = Hello. Used for both formal and informal greetings. From Arabic 'salaam' (peace)."},
+    {q:"How do you say 'Thank you' in Persian?",farsi:"___",translit:"",options:[{fa:"ببخشید",lat:"bebakhshid — excuse me"},{fa:"سلام",lat:"salām — hello"},{fa:"ممنون",lat:"mamnun ✓"},{fa:"خداحافظ",lat:"khodāhāfez — goodbye"}],answer:2,explanation:"ممنون (mamnun) = Thank you. You can also say ممنونم (mamnunam = I am grateful)."},
+    {q:"What does ببخشید mean?",farsi:"ببخشید",translit:"bebakhshid",options:[{fa:"You're welcome",lat:"response to thanks"},{fa:"Excuse me / I'm sorry",lat:"apology ✓"},{fa:"Please sit down",lat:"invitation"},{fa:"Nice to meet you",lat:"introduction"}],answer:1,explanation:"ببخشید (bebakhshid) = Excuse me / I'm sorry. Literally 'please forgive' (from بخشیدن = to forgive)."},
+    {q:"Translate: 'How are you?' (informal)",farsi:"حالت چطوره؟",translit:"hālet chetore?",options:[{fa:"Where are you from?",lat:"origin"},{fa:"What is your name?",lat:"name"},{fa:"How are you? (informal)",lat:"wellbeing ✓"},{fa:"Do you speak Persian?",lat:"language"}],answer:2,explanation:"حالت چطوره؟ = How are you? (informal). حال = state/condition, چطور = how."},
+    {q:"What does خداحافظ literally mean?",farsi:"خداحافظ",translit:"khodāhāfez",options:[{fa:"See you later",lat:"until next time"},{fa:"God be your guardian (Goodbye)",lat:"خدا=God, حافظ=guardian ✓"},{fa:"Have a good day",lat:"daily farewell"},{fa:"Peace be with you",lat:"religious greeting"}],answer:1,explanation:"خداحافظ = Goodbye. خدا=God, حافظ=guardian. 'May God be your guardian' — a beautiful farewell!"},
+    {q:"How do you say 'You're welcome' in Persian?",farsi:"___",translit:"",options:[{fa:"ممنون",lat:"mamnun — thank you"},{fa:"ببخشید",lat:"bebakhshid — excuse me"},{fa:"خواهش می‌کنم",lat:"khāhesh mi-konam ✓"},{fa:"بله",lat:"bale — yes"}],answer:2,explanation:"خواهش می‌کنم (khāhesh mi-konam) = You're welcome / Please. Literally 'I make a wish/request'."},
+  ]},
+};
+
+// ============================================================
+//  VOCABULARY DATA
+// ============================================================
+const vocabData = {
+  "Greetings":[
+    {fa:"سلام",translit:"salām",en:"Hello"},{fa:"خداحافظ",translit:"khodāhāfez",en:"Goodbye"},
+    {fa:"ممنون",translit:"mamnun",en:"Thank you"},{fa:"ببخشید",translit:"bebakhshid",en:"Excuse me"},
+    {fa:"بله",translit:"bale",en:"Yes"},{fa:"نه",translit:"na",en:"No"},
+    {fa:"خوبم",translit:"khubam",en:"I'm fine"},{fa:"لطفاً",translit:"lotfan",en:"Please"},
+    {fa:"خواهش می‌کنم",translit:"khāhesh mi-konam",en:"You're welcome"},{fa:"چطوری؟",translit:"chetori?",en:"How are you?"},
+  ],
+  "Numbers":[
+    {fa:"یک",translit:"yek",en:"One"},{fa:"دو",translit:"do",en:"Two"},
+    {fa:"سه",translit:"se",en:"Three"},{fa:"چهار",translit:"chahār",en:"Four"},
+    {fa:"پنج",translit:"panj",en:"Five"},{fa:"شش",translit:"shesh",en:"Six"},
+    {fa:"هفت",translit:"haft",en:"Seven"},{fa:"هشت",translit:"hasht",en:"Eight"},
+    {fa:"نه",translit:"noh",en:"Nine"},{fa:"ده",translit:"dah",en:"Ten"},
+  ],
+  "Colors":[
+    {fa:"قرمز",translit:"qermez",en:"Red"},{fa:"آبی",translit:"ābi",en:"Blue"},
+    {fa:"سبز",translit:"sabz",en:"Green"},{fa:"زرد",translit:"zard",en:"Yellow"},
+    {fa:"سفید",translit:"sefid",en:"White"},{fa:"مشکی",translit:"meshki",en:"Black"},
+    {fa:"نارنجی",translit:"nārenji",en:"Orange"},{fa:"بنفش",translit:"banafsh",en:"Purple"},
+  ],
+  "Family":[
+    {fa:"مادر",translit:"mādar",en:"Mother"},{fa:"پدر",translit:"pedar",en:"Father"},
+    {fa:"خواهر",translit:"khāhar",en:"Sister"},{fa:"برادر",translit:"barādar",en:"Brother"},
+    {fa:"پسر",translit:"pesar",en:"Son / Boy"},{fa:"دختر",translit:"dokhtar",en:"Daughter / Girl"},
+    {fa:"شوهر",translit:"showhar",en:"Husband"},{fa:"زن",translit:"zan",en:"Wife / Woman"},
+    {fa:"بچه",translit:"bache",en:"Child"},{fa:"خانواده",translit:"khānevāde",en:"Family"},
+  ],
+  "Food & Drink":[
+    {fa:"نان",translit:"nān",en:"Bread"},{fa:"آب",translit:"āb",en:"Water"},
+    {fa:"چای",translit:"chāy",en:"Tea"},{fa:"برنج",translit:"berenj",en:"Rice"},
+    {fa:"گوشت",translit:"gusht",en:"Meat"},{fa:"مرغ",translit:"morgh",en:"Chicken"},
+    {fa:"ماهی",translit:"māhi",en:"Fish"},{fa:"سیب",translit:"sib",en:"Apple"},
+    {fa:"موز",translit:"muz",en:"Banana"},{fa:"قهوه",translit:"qahve",en:"Coffee"},
+  ],
+  "Time":[
+    {fa:"امروز",translit:"emruz",en:"Today"},{fa:"دیروز",translit:"diruz",en:"Yesterday"},
+    {fa:"فردا",translit:"fardā",en:"Tomorrow"},{fa:"الان",translit:"alān",en:"Now"},
+    {fa:"بعداً",translit:"ba'dan",en:"Later"},{fa:"صبح",translit:"sobh",en:"Morning"},
+    {fa:"شب",translit:"shab",en:"Night"},{fa:"هفته",translit:"hafte",en:"Week"},
+  ],
+  "Common Verbs":[
+    {fa:"رفتن",translit:"raftan",en:"To go"},{fa:"آمدن",translit:"āmadan",en:"To come"},
+    {fa:"خوردن",translit:"khordan",en:"To eat"},{fa:"خوابیدن",translit:"khābidan",en:"To sleep"},
+    {fa:"دیدن",translit:"didan",en:"To see"},{fa:"گفتن",translit:"goftan",en:"To say"},
+    {fa:"کردن",translit:"kardan",en:"To do"},{fa:"خواندن",translit:"khāndan",en:"To read"},
+    {fa:"نوشتن",translit:"neveshtan",en:"To write"},{fa:"خریدن",translit:"kharidan",en:"To buy"},
+  ],
+  "Body Parts":[
+    {fa:"سر",translit:"sar",en:"Head"},{fa:"چشم",translit:"cheshm",en:"Eye"},
+    {fa:"گوش",translit:"gush",en:"Ear"},{fa:"دهان",translit:"dahān",en:"Mouth"},
+    {fa:"دست",translit:"dast",en:"Hand"},{fa:"پا",translit:"pā",en:"Foot / Leg"},
+    {fa:"قلب",translit:"qalb",en:"Heart"},{fa:"بینی",translit:"bini",en:"Nose"},
+  ],
+  "Emotions":[
+    {fa:"خوشحال",translit:"khoshhāl",en:"Happy"},{fa:"ناراحت",translit:"nārāhat",en:"Sad"},
+    {fa:"عصبانی",translit:"asabāni",en:"Angry"},{fa:"ترسیده",translit:"tarsideh",en:"Scared"},
+    {fa:"خسته",translit:"khaste",en:"Tired"},{fa:"گرسنه",translit:"gorosne",en:"Hungry"},
+    {fa:"تشنه",translit:"teshne",en:"Thirsty"},{fa:"هیجان‌زده",translit:"hayajānzadeh",en:"Excited"},
+  ],
+  "Places":[
+    {fa:"خانه",translit:"khāne",en:"House / Home"},{fa:"مدرسه",translit:"madrase",en:"School"},
+    {fa:"بازار",translit:"bāzār",en:"Market / Bazaar"},{fa:"بیمارستان",translit:"bimārestān",en:"Hospital"},
+    {fa:"مسجد",translit:"masjed",en:"Mosque"},{fa:"پارک",translit:"pārk",en:"Park"},
+    {fa:"فرودگاه",translit:"forudgāh",en:"Airport"},{fa:"رستوران",translit:"restorān",en:"Restaurant"},
+  ],
+  "Days of Week":[
+    {fa:"شنبه",translit:"shanbe",en:"Saturday"},{fa:"یکشنبه",translit:"yekshanbe",en:"Sunday"},
+    {fa:"دوشنبه",translit:"doshanbe",en:"Monday"},{fa:"سه‌شنبه",translit:"seshanbe",en:"Tuesday"},
+    {fa:"چهارشنبه",translit:"chahārshanbe",en:"Wednesday"},{fa:"پنجشنبه",translit:"panjshanbe",en:"Thursday"},
+    {fa:"جمعه",translit:"jom'e",en:"Friday"},
+  ],
+  "Weather":[
+    {fa:"آفتابی",translit:"āftābi",en:"Sunny"},{fa:"ابری",translit:"abri",en:"Cloudy"},
+    {fa:"بارانی",translit:"bārāni",en:"Rainy"},{fa:"برفی",translit:"barfi",en:"Snowy"},
+    {fa:"گرم",translit:"garm",en:"Hot / Warm"},{fa:"سرد",translit:"sard",en:"Cold"},
+    {fa:"باد",translit:"bād",en:"Wind"},{fa:"هوا",translit:"havā",en:"Weather / Air"},
+  ],
+  "Adjectives":[
+    {fa:"بزرگ",translit:"bozorg",en:"Big"},{fa:"کوچک",translit:"kuchak",en:"Small"},
+    {fa:"جدید",translit:"jadid",en:"New"},{fa:"قدیمی",translit:"qadimi",en:"Old (for things)"},
+    {fa:"سریع",translit:"sari'",en:"Fast"},{fa:"کُند",translit:"kond",en:"Slow"},
+    {fa:"زیبا",translit:"zibā",en:"Beautiful"},{fa:"بد",translit:"bad",en:"Bad"},
+  ],
+};
+
+// ============================================================
+//  CONJUGATION DATA
+// ============================================================
+const conjVerbs = [
+  {name:"رفتن — to go",present:["می‌روم","می‌روی","می‌رود","می‌رویم","می‌روید","می‌روند"],past:["رفتم","رفتی","رفت","رفتیم","رفتید","رفتند"]},
+  {name:"خوردن — to eat",present:["می‌خورم","می‌خوری","می‌خورد","می‌خوریم","می‌خورید","می‌خورند"],past:["خوردم","خوردی","خورد","خوردیم","خوردید","خوردند"]},
+  {name:"آمدن — to come",present:["می‌آیم","می‌آیی","می‌آید","می‌آییم","می‌آیید","می‌آیند"],past:["آمدم","آمدی","آمد","آمدیم","آمدید","آمدند"]},
+  {name:"دیدن — to see",present:["می‌بینم","می‌بینی","می‌بیند","می‌بینیم","می‌بینید","می‌بینند"],past:["دیدم","دیدی","دید","دیدیم","دیدید","دیدند"]},
+  {name:"گفتن — to say",present:["می‌گویم","می‌گویی","می‌گوید","می‌گوییم","می‌گویید","می‌گویند"],past:["گفتم","گفتی","گفت","گفتیم","گفتید","گفتند"]},
+  {name:"کردن — to do",present:["می‌کنم","می‌کنی","می‌کند","می‌کنیم","می‌کنید","می‌کنند"],past:["کردم","کردی","کرد","کردیم","کردید","کردند"]},
+  {name:"نوشتن — to write",present:["می‌نویسم","می‌نویسی","می‌نویسد","می‌نویسیم","می‌نویسید","می‌نویسند"],past:["نوشتم","نوشتی","نوشت","نوشتیم","نوشتید","نوشتند"]},
+  {name:"خواندن — to read",present:["می‌خوانم","می‌خوانی","می‌خواند","می‌خوانیم","می‌خوانید","می‌خوانند"],past:["خواندم","خواندی","خواند","خواندیم","خواندید","خواندند"]},
+];
+const pronounLabels = ["من (man) — I","تو (to) — you","او (u) — he/she","ما (mā) — we","شما (shomā) — you (formal)","آنها (ānhā) — they"];
+
+// ============================================================
+//  WORD ORDER SENTENCES
+// ============================================================
+const woAllSentences = [
+  {w:["من","کتاب","می‌خوانم"],t:"I read a book",hint:"SOV — Subject + Object + Verb"},
+  {w:["او","آب","می‌خورد"],t:"He/she drinks water",hint:"3rd person singular present"},
+  {w:["ما","به","مدرسه","می‌رویم"],t:"We go to school",hint:"Prepositional phrase before verb"},
+  {w:["تو","خوب","هستی"],t:"You are good",hint:"Subject + Adjective + To Be"},
+  {w:["آنها","دانشجو","هستند"],t:"They are students",hint:"Subject + Noun + To Be"},
+  {w:["من","کتاب","را","خواندم"],t:"I read the book",hint:"را marks a definite direct object"},
+  {w:["علی","سارا","را","می‌بیند"],t:"Ali sees Sara",hint:"SOV + را for specific object"},
+  {w:["من","نمی‌روم"],t:"I am not going",hint:"نمی = negative present prefix"},
+  {w:["آنها","دانشجو","نیستند"],t:"They are not students",hint:"نیست- for negating 'to be'"},
+  {w:["ما","فیلم","دیدیم"],t:"We saw a film",hint:"Past tense: past stem + personal ending"},
+  {w:["او","به","تهران","رفت"],t:"He/she went to Tehran",hint:"Simple past, 3rd person singular"},
+  {w:["من","فردا","می‌روم"],t:"I am going tomorrow",hint:"Time expressions are flexible in position"},
+  {w:["ما","دیروز","رفتیم"],t:"We went yesterday",hint:"Past tense with time word"},
+  {w:["تو","کجا","می‌روی؟"],t:"Where are you going?",hint:"Question word before the verb"},
+  {w:["او","چرا","نمی‌آید؟"],t:"Why is he/she not coming?",hint:"Question word + negation"},
+  {w:["شما","معلم","هستید"],t:"You are a teacher (formal)",hint:"Formal 'you' with هستید"},
+  {w:["من","سیب","نمی‌خورم"],t:"I don't eat apples",hint:"Negation: replace می with نمی"},
+  {w:["سه","کتاب","دارم"],t:"I have three books",hint:"After numbers, no plural suffix needed"},
+  {w:["آنها","حرف","می‌زنند"],t:"They are talking",hint:"Compound verb: حرف زدن = to speak"},
+  {w:["او","به","خانه","رفت"],t:"He/she went home",hint:"به = to/toward (directional preposition)"},
+];
+
+// ============================================================
+//  STORAGE HELPERS
+// ============================================================
+const ls = {
+  get(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}},
+};
+
+function getWC(){return ls.get('wc',{});}
+function incWrong(id){const w=getWC();w[id]=(w[id]||0)+1;ls.set('wc',w);}
+function getStats(){return ls.get('stats',{total:0,correct:0});}
+function addStat(ok){const s=getStats();s.total++;if(ok)s.correct++;ls.set('stats',s);}
+
+function touchStreak(){
+  const today=new Date().toISOString().slice(0,10);
+  const ds=ls.get('ds',{date:'',streak:0});
+  if(ds.date===today)return ds.streak;
+  const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+  const newS=ds.date===yesterday?ds.streak+1:1;
+  ls.set('ds',{date:today,streak:newS});
+  return newS;
+}
+function getStreak(){return ls.get('ds',{streak:0}).streak;}
+
+// ============================================================
+//  THEME
+// ============================================================
+function applyTheme(dark){
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+  document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';
+  const t=document.getElementById('darkToggle');if(t)t.checked=dark;
+  ls.set('dark',dark);
+}
+function toggleTheme(){applyTheme(document.documentElement.getAttribute('data-theme')!=='light');}
+
+// ============================================================
+//  SETTINGS
+// ============================================================
+function openSettings(){
+  const s=getStats();
+  document.getElementById('statTotal').textContent=s.total;
+  document.getElementById('statCorrect').textContent=s.correct;
+  document.getElementById('statStreak').textContent=getStreak();
+  document.getElementById('timedToggle').checked=ls.get('timed',false);
+  document.getElementById('soundToggle').checked=ls.get('sound',true);
+  document.getElementById('darkToggle').checked=document.documentElement.getAttribute('data-theme')==='dark';
+  document.getElementById('settingsOverlay').classList.add('open');
+}
+function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');}
+function closeSettingsOutside(e){if(e.target===document.getElementById('settingsOverlay'))closeSettings();}
+function saveTimedSetting(){
+  const t=document.getElementById('timedToggle').checked;
+  ls.set('timed',t);
+  document.getElementById('timerWrap').style.display=t?'':'none';
+}
+function exportProgress(){
+  const data={};
+  ['wc','stats','ds','dark','timed'].forEach(k=>data[k]=ls.get(k,null));
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  a.download='farsi-progress.json';a.click();
+}
+function importProgress(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{try{const d=JSON.parse(ev.target.result);for(const k in d)if(d[k]!==null)ls.set(k,d[k]);alert('Imported! Reloading…');location.reload();}catch{alert('Invalid JSON.');}};
+  r.readAsText(f);
+}
+function confirmReset(){if(confirm('Reset ALL progress? This cannot be undone.')){localStorage.clear();location.reload();}}
+
+// ============================================================
+//  TAB NAVIGATION
+// ============================================================
+function showTab(tab){
+  clearTimer();
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelectorAll('.tabs .tab-btn').forEach((b,i)=>b.classList.toggle('active',['grammar','vocab','conj','wordorder','progress'][i]===tab));
+  if(tab==='progress') buildProgressTab();
+  if(tab==='wordorder' && woSentences.length===0) startWordOrder();
+}
+
+// ============================================================
+//  AUDIO
+// ============================================================
+function speak(text){
+  if(!window.speechSynthesis||!text||text==='___')return;
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='fa-IR';u.rate=0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+function speakCurrent(){speak(document.getElementById('farsiText').textContent);}
+function speakVocabCurrent(){speak(document.getElementById('vqFarsiText').textContent);}
+
+// ============================================================
+//  GRAMMAR GAME
+// ============================================================
+let curTopic=null,questions=[],curIdx=0,gScore=0,gStreak=0,answered=false,wrongAnswers=[];
+let timerInt=null,timerSecs=30;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function buildNav(){
+  const nav=document.getElementById('topicNav');nav.innerHTML='';
+  const ab=document.createElement('button');
+  ab.className='topic-btn'+(curTopic==='all'?' active':'');
+  ab.textContent='All Topics';ab.onclick=()=>startGame('all');nav.appendChild(ab);
+  for(const k in topics){
+    const b=document.createElement('button');
+    b.className='topic-btn'+(curTopic===k?' active':'');
+    b.textContent=topics[k].label;
+    b.onclick=()=>maybeShowLesson(k);
+    nav.appendChild(b);
+  }
+}
+
+function startGame(key){
+  curTopic=key;curIdx=0;gScore=0;gStreak=0;answered=false;wrongAnswers=[];clearTimer();
+  const wc=getWC();
+  let base=[];
+  if(key==='all'){
+    for(const k in topics) topics[k].questions.forEach((q,i)=>base.push({...q,_topic:k,_id:`${k}_${i}`}));
+  } else {
+    topics[key].questions.forEach((q,i)=>base.push({...q,_topic:key,_id:`${key}_${i}`}));
+  }
+  // Weighted shuffle for spaced repetition
+  const weighted=[];
+  base.forEach(q=>{ const w=1+(wc[q._id]||0); for(let i=0;i<Math.min(w,3);i++)weighted.push(q); });
+  shuffle(weighted);
+  // Deduplicate preserving order
+  const seen=new Set();
+  questions=weighted.filter(q=>{if(seen.has(q._id))return false;seen.add(q._id);return true;});
+
+  buildNav();
+  document.getElementById('resultsScreen').classList.remove('show');
+  document.getElementById('gameCard').style.display='';
+  updateGScore();loadQuestion();
+  document.getElementById('timerWrap').style.display=ls.get('timed',false)?'':'none';
+}
+
+function loadQuestion(){
+  clearTimer();
+  if(curIdx>=questions.length){showResults();return;}
+  answered=false;
+  const q=questions[curIdx];
+  const tk=q._topic||curTopic;
+  document.getElementById('progressFill').style.width=(curIdx/questions.length*100)+'%';
+  document.getElementById('questionNum').textContent=(curIdx+1)+'/'+questions.length;
+  document.getElementById('topicTag').textContent=topics[tk]?topics[tk].label:'';
+  document.getElementById('questionText').textContent=q.q;
+
+  const fd=document.getElementById('farsiDisplay'),ft=document.getElementById('farsiText');
+  if(q.farsi){ft.textContent=q.farsi;fd.style.display='flex';}else fd.style.display='none';
+
+  const tr=document.getElementById('translit');
+  if(q.translit){tr.textContent=q.translit;tr.style.display='';}else tr.style.display='none';
+
+  const grid=document.getElementById('optionsGrid');grid.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const b=document.createElement('button');b.className='option-btn';
+    b.innerHTML=`<span class="option-num">${i+1}</span><span class="option-farsi">${opt.fa}</span><span class="option-latin">${opt.lat||''}</span>`;
+    b.onclick=()=>selectAnswer(i);grid.appendChild(b);
+  });
+
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').classList.remove('show');
+  document.getElementById('refPanel').classList.remove('open');
+  document.getElementById('refToggle').textContent='Show Reference';
+  if(topics[tk]){document.getElementById('refPanel').innerHTML=topics[tk].ref;document.getElementById('refToggle').style.display='';}
+  else document.getElementById('refToggle').style.display='none';
+
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(ls.get('timed',false))startTimer();
+}
+
+function startTimer(){
+  timerSecs=30;
+  const fill=document.getElementById('timerFill');
+  fill.style.width='100%';fill.style.background='var(--gold)';
+  timerInt=setInterval(()=>{
+    timerSecs--;
+    fill.style.width=(timerSecs/30*100)+'%';
+    if(timerSecs<=10)fill.style.background='var(--red)';
+    if(timerSecs<=0){clearTimer();timeUp();}
+  },1000);
+}
+function clearTimer(){if(timerInt){clearInterval(timerInt);timerInt=null;}}
+function timeUp(){
+  if(answered)return;answered=true;
+  const q=questions[curIdx];
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  document.querySelectorAll('.option-btn')[q.answer].classList.add('correct');
+  gStreak=0;incWrong(q._id);addStat(false);addTopicStat(q._topic||curTopic,false);playSound(false);wrongAnswers.push({...q,_myAnswer:-1});
+  updateGScore();
+  const fb=document.getElementById('feedback');
+  fb.className='feedback wrong-fb show';
+  document.getElementById('feedbackTitle').textContent="⏱ Time's up!";
+  document.getElementById('feedbackBody').innerHTML=`Correct: <b>${q.options[q.answer].fa}</b><br>${q.explanation||''}`;
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function selectAnswer(chosen){
+  if(answered)return;answered=true;clearTimer();
+  const q=questions[curIdx];
+  const btns=document.querySelectorAll('.option-btn');
+  btns.forEach(b=>b.disabled=true);
+  const ok=chosen===q.answer;
+  btns[q.answer].classList.add('correct');
+  if(!ok){btns[chosen].classList.add('wrong');gStreak=0;incWrong(q._id);wrongAnswers.push({...q,_myAnswer:chosen});}
+  else{gScore++;gStreak++;}
+  addStat(ok);addTopicStat(q._topic||curTopic,ok);playSound(ok);updateGScore();
+  const fb=document.getElementById('feedback');
+  if(ok){
+    fb.className='feedback correct-fb show';
+    document.getElementById('feedbackTitle').textContent=gStreak>=3?`Correct! ${gStreak}-streak! 🔥`:'Correct! ✓';
+    document.getElementById('feedbackBody').innerHTML=q.explanation||'';
+  } else {
+    fb.className='feedback wrong-fb show';
+    document.getElementById('feedbackTitle').textContent='Not quite!';
+    document.getElementById('feedbackBody').innerHTML=`Correct: <b>${q.options[q.answer].fa}</b><br>${q.explanation||''}`;
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion(){curIdx++;loadQuestion();}
+function updateGScore(){
+  document.getElementById('scoreNum').textContent=gScore;
+  document.getElementById('questionNum').textContent=(curIdx+1)+'/'+questions.length;
+  document.getElementById('streakNum').textContent=gStreak+(gStreak>=3?'🔥':'');
+}
+
+function showResults(){
+  clearTimer();
+  document.getElementById('gameCard').style.display='none';
+  document.getElementById('resultsScreen').classList.add('show');
+  document.getElementById('reviewList').style.display='none';
+  const pct=Math.round(gScore/questions.length*100);
+  document.getElementById('resultsScore').textContent=`${gScore} / ${questions.length}`;
+  const msg=pct===100?'Perfect! آفرین! (Excellent!)':pct>=80?'Great job! خوب بود!':pct>=60?'Good effort! کمی بیشتر تمرین کنید.':'Keep at it! زبان نیاز به صبر دارد.';
+  document.getElementById('resultsMsg').textContent=`${pct}% — ${msg}`;
+  document.getElementById('reviewBtn').style.display=wrongAnswers.length>0?'':'none';
+  const ns=touchStreak();
+  document.getElementById('streakBadge').textContent=`🔥 ${ns} day streak`;
+}
+
+function showReview(){
+  const list=document.getElementById('reviewList');
+  list.style.display='block';
+  list.innerHTML='<h3 style="color:var(--gold);margin-bottom:12px">Missed Questions</h3>';
+  wrongAnswers.forEach(q=>{
+    const d=document.createElement('div');d.className='review-item';
+    d.innerHTML=`<div class="review-q">${q.q}</div>${q.farsi&&q.farsi!=='___'?`<div class="review-farsi">${q.farsi}</div>`:''}<div class="review-answer">✓ ${q.options[q.answer].fa} — ${q.options[q.answer].lat}</div><div class="review-exp">${q.explanation||''}</div>`;
+    list.appendChild(d);
+  });
+}
+
+function restartTopic(){startGame(curTopic);}
+function showTopicSelect(){
+  document.getElementById('resultsScreen').classList.remove('show');
+  document.getElementById('gameCard').style.display='none';
+  curTopic=null;questions=[];curIdx=0;buildNav();
+}
+function toggleRef(){
+  const p=document.getElementById('refPanel'),b=document.getElementById('refToggle');
+  const open=p.classList.toggle('open');b.textContent=open?'Hide Reference':'Show Reference';
+}
+
+// ============================================================
+//  VOCABULARY — FLASHCARD
+// ============================================================
+let vCat='Greetings',vList=[],vIdx=0,vMode='flash',vFlipped=false;
+
+function buildVocabCatNav(){
+  const nav=document.getElementById('vocabCatNav');nav.innerHTML='';
+  Object.keys(vocabData).forEach(cat=>{
+    const b=document.createElement('button');
+    b.className='topic-btn'+(cat===vCat?' active':'');
+    b.textContent=cat;b.onclick=()=>{vCat=cat;loadVocabCat();buildVocabCatNav();};
+    nav.appendChild(b);
+  });
+}
+
+function loadVocabCat(){
+  vList=[...vocabData[vCat]];shuffle(vList);vIdx=0;
+  if(vMode==='flash')loadFlashcard();else startVocabQuiz();
+}
+
+function loadFlashcard(){
+  vFlipped=false;
+  const w=vList[vIdx];
+  document.getElementById('flashFa').textContent=w.fa;
+  document.getElementById('flashReveal').style.display='none';
+  document.getElementById('flashHint').style.display='';
+  document.getElementById('flashTranslit').textContent=w.translit;
+  document.getElementById('flashEn').textContent=w.en;
+  document.getElementById('vocabCounter').textContent=`${vIdx+1} / ${vList.length} — ${vCat}`;
+}
+
+function flipCard(){
+  vFlipped=!vFlipped;
+  document.getElementById('flashReveal').style.display=vFlipped?'':'none';
+  document.getElementById('flashHint').style.display=vFlipped?'none':'';
+  if(vFlipped)speak(vList[vIdx].fa);
+}
+function nextVocab(){vIdx=(vIdx+1)%vList.length;loadFlashcard();}
+function prevVocab(){vIdx=(vIdx-1+vList.length)%vList.length;loadFlashcard();}
+
+function setVocabMode(mode){
+  vMode=mode;
+  document.getElementById('flashModeBtn').classList.toggle('active',mode==='flash');
+  document.getElementById('quizModeBtn').classList.toggle('active',mode==='quiz');
+  document.getElementById('flashMode').style.display=mode==='flash'?'':'none';
+  document.getElementById('quizMode').style.display=mode==='quiz'?'':'none';
+  document.getElementById('vqResults').classList.remove('show');
+  document.getElementById('vocabQuizCard').style.display='';
+  if(mode==='flash')loadFlashcard();else startVocabQuiz();
+}
+
+// ============================================================
+//  VOCABULARY QUIZ
+// ============================================================
+let vqList=[],vqIdx=0,vqScore=0,vqAnswered=false;
+
+function startVocabQuiz(){
+  vList=[...vocabData[vCat]];shuffle(vList);
+  vqList=vList;vqIdx=0;vqScore=0;vqAnswered=false;
+  document.getElementById('vqResults').classList.remove('show');
+  document.getElementById('vocabQuizCard').style.display='';
+  loadVocabQuiz();
+}
+
+function loadVocabQuiz(){
+  if(vqIdx>=vqList.length){showVqResults();return;}
+  vqAnswered=false;
+  const w=vqList[vqIdx];
+  document.getElementById('vqProgressFill').style.width=(vqIdx/vqList.length*100)+'%';
+  document.getElementById('vqNum').textContent=`${vqIdx+1}/${vqList.length}`;
+  document.getElementById('vqCatTag').textContent=vCat;
+  document.getElementById('vqFarsiText').textContent=w.fa;
+  document.getElementById('vqTranslit').textContent=w.translit;
+
+  const all=vocabData[vCat];
+  const wrongs=all.filter(x=>x.en!==w.en);shuffle(wrongs);
+  const opts=[w,...wrongs.slice(0,3)];shuffle(opts);
+  const ci=opts.indexOf(w);
+
+  const grid=document.getElementById('vqOptions');grid.innerHTML='';
+  opts.forEach((opt,i)=>{
+    const b=document.createElement('button');b.className='option-btn';
+    b.innerHTML=`<span class="option-num">${i+1}</span><span class="option-farsi" style="font-size:1rem;font-family:inherit;direction:ltr">${opt.en}</span>`;
+    b.onclick=()=>selectVqAnswer(i,ci,w);grid.appendChild(b);
+  });
+  document.getElementById('vqFeedback').className='feedback';
+  document.getElementById('vqNextBtn').classList.remove('show');
+}
+
+function selectVqAnswer(chosen,correct,word){
+  if(vqAnswered)return;vqAnswered=true;
+  const btns=document.querySelectorAll('#vqOptions .option-btn');
+  btns.forEach(b=>b.disabled=true);
+  btns[correct].classList.add('correct');
+  if(chosen!==correct)btns[chosen].classList.add('wrong');else vqScore++;
+  const fb=document.getElementById('vqFeedback');
+  fb.className=chosen===correct?'feedback correct-fb show':'feedback wrong-fb show';
+  document.getElementById('vqFeedbackTitle').textContent=chosen===correct?'Correct! ✓':'Not quite!';
+  document.getElementById('vqFeedbackBody').innerHTML=`<b>${word.fa}</b> (${word.translit}) = <b>${word.en}</b>`;
+  speak(word.fa);
+  document.getElementById('vqNextBtn').classList.add('show');
+}
+
+function nextVocabQuiz(){vqIdx++;loadVocabQuiz();}
+function showVqResults(){
+  document.getElementById('vocabQuizCard').style.display='none';
+  document.getElementById('vqResults').classList.add('show');
+  const pct=Math.round(vqScore/vqList.length*100);
+  document.getElementById('vqScore').textContent=`${vqScore} / ${vqList.length}`;
+  document.getElementById('vqMsg').textContent=`${pct}% — ${pct===100?'Perfect!':pct>=80?'Great!':pct>=60?'Good!':'Keep going!'}`;
+}
+
+// ============================================================
+//  CONJUGATION DRILLS
+// ============================================================
+let conjTense='present',conjQ=[],conjIdx=0,conjScore=0,conjAnswered=false;
+
+function initConjSelect(){
+  const sel=document.getElementById('conjVerbSel');sel.innerHTML='';
+  conjVerbs.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.name;sel.appendChild(o);});
+}
+
+function setConjTense(t){
+  conjTense=t;
+  document.getElementById('conjPresBtn').classList.toggle('active',t==='present');
+  document.getElementById('conjPastBtn').classList.toggle('active',t==='past');
+  initConjDrill();
+}
+
+function initConjDrill(){
+  const vi=parseInt(document.getElementById('conjVerbSel').value);
+  const verb=conjVerbs[vi];
+  const forms=verb[conjTense];
+  conjIdx=0;conjScore=0;conjAnswered=false;
+  conjQ=pronounLabels.map((p,i)=>({pronoun:p,answer:forms[i],verbIdx:vi}));
+  shuffle(conjQ);
+  document.getElementById('conjResults').classList.remove('show');
+  document.getElementById('conjCard').style.display='';
+  document.getElementById('conjVerbTag').textContent=verb.name;
+  document.getElementById('conjTenseLabel').textContent=conjTense==='present'?'Present Tense':'Past Tense';
+  updateConjScore();loadConjDrill();
+}
+
+function loadConjDrill(){
+  if(conjIdx>=conjQ.length){showConjResults();return;}
+  conjAnswered=false;
+  const q=conjQ[conjIdx];
+  const verb=conjVerbs[q.verbIdx];
+  const forms=verb[conjTense];
+  document.getElementById('conjProgFill').style.width=(conjIdx/conjQ.length*100)+'%';
+  document.getElementById('conjQNum').textContent=(conjIdx+1)+'/'+conjQ.length;
+  document.getElementById('conjPronoun').textContent=q.pronoun;
+
+  const wrongs=forms.filter(f=>f!==q.answer);shuffle(wrongs);
+  const opts=[q.answer,...wrongs.slice(0,3)];shuffle(opts);
+  const ci=opts.indexOf(q.answer);
+
+  const grid=document.getElementById('conjOptions');grid.innerHTML='';
+  opts.forEach((opt,i)=>{
+    const b=document.createElement('button');b.className='option-btn';
+    b.innerHTML=`<span class="option-num">${i+1}</span><span class="option-farsi">${opt}</span>`;
+    b.onclick=()=>selectConj(i,ci,q.answer);grid.appendChild(b);
+  });
+  document.getElementById('conjFb').className='feedback';
+  document.getElementById('conjNextBtn').classList.remove('show');
+}
+
+function selectConj(chosen,correct,answer){
+  if(conjAnswered)return;conjAnswered=true;
+  const btns=document.querySelectorAll('#conjOptions .option-btn');
+  btns.forEach(b=>b.disabled=true);
+  btns[correct].classList.add('correct');
+  if(chosen!==correct)btns[chosen].classList.add('wrong');else conjScore++;
+  const fb=document.getElementById('conjFb');
+  fb.className=chosen===correct?'feedback correct-fb show':'feedback wrong-fb show';
+  document.getElementById('conjFbTitle').textContent=chosen===correct?'Correct! ✓':'Not quite!';
+  document.getElementById('conjFbBody').innerHTML=`Correct conjugation: <b>${answer}</b>`;
+  speak(answer);
+  document.getElementById('conjNextBtn').classList.add('show');
+  updateConjScore();
+}
+
+function nextConjDrill(){conjIdx++;loadConjDrill();}
+function updateConjScore(){
+  document.getElementById('conjScoreNum').textContent=conjScore;
+  document.getElementById('conjQNum').textContent=conjQ.length?(conjIdx+1)+'/'+conjQ.length:'—';
+}
+function showConjResults(){
+  document.getElementById('conjCard').style.display='none';
+  document.getElementById('conjResults').classList.add('show');
+  const pct=Math.round(conjScore/conjQ.length*100);
+  document.getElementById('conjResScore').textContent=`${conjScore} / ${conjQ.length}`;
+  document.getElementById('conjResMsg').textContent=`${pct}% — ${pct===100?'Perfect! آفرین!':pct>=80?'Excellent!':pct>=60?'Good effort!':'Keep drilling!'}`;
+}
+
+// ============================================================
+//  SOUND EFFECTS
+// ============================================================
+function playSound(ok) {
+  if (!ls.get('sound', true)) return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.12, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+    if (ok) {
+      o.type = 'sine';
+      o.frequency.setValueAtTime(520, ctx.currentTime);
+      o.frequency.setValueAtTime(660, ctx.currentTime + 0.12);
+    } else {
+      o.type = 'sawtooth';
+      o.frequency.setValueAtTime(260, ctx.currentTime);
+      o.frequency.setValueAtTime(180, ctx.currentTime + 0.12);
+    }
+    o.start(); o.stop(ctx.currentTime + 0.35);
+  } catch(e) {}
+}
+
+// ============================================================
+//  LESSON MODAL
+// ============================================================
+let pendingTopicKey = null;
+
+function maybeShowLesson(key) {
+  const topic = topics[key];
+  if (!topic || !topic.lesson) { startGame(key); return; }
+  const seen = ls.get('seenLessons', {});
+  if (seen[key]) { startGame(key); return; }
+  seen[key] = true; ls.set('seenLessons', seen);
+  pendingTopicKey = key;
+  document.getElementById('lessonTopicLabel').textContent = topic.label;
+  document.getElementById('lessonTitle').textContent = 'Quick Lesson: ' + topic.label;
+  document.getElementById('lessonBody').innerHTML = topic.lesson;
+  document.getElementById('lessonOverlay').classList.add('open');
+}
+
+function viewLesson(key) {
+  const topic = topics[key]; if (!topic || !topic.lesson) return;
+  pendingTopicKey = key;
+  document.getElementById('lessonTopicLabel').textContent = topic.label;
+  document.getElementById('lessonTitle').textContent = 'Lesson: ' + topic.label;
+  document.getElementById('lessonBody').innerHTML = topic.lesson;
+  document.getElementById('lessonOverlay').classList.add('open');
+}
+
+function closeLessonAndStart() {
+  document.getElementById('lessonOverlay').classList.remove('open');
+  if (pendingTopicKey) { startGame(pendingTopicKey); pendingTopicKey = null; }
+}
+
+// ============================================================
+//  PER-TOPIC STAT TRACKING
+// ============================================================
+function addTopicStat(topicKey, ok) {
+  const ts = ls.get('topicStats', {});
+  if (!ts[topicKey]) ts[topicKey] = {total:0, correct:0};
+  ts[topicKey].total++;
+  if (ok) ts[topicKey].correct++;
+  ls.set('topicStats', ts);
+}
+
+// ============================================================
+//  WORD ORDER BUILDER
+// ============================================================
+let woSentences = [], woIdx = 0, woScore = 0, woSelected = [], woShuffled = [], woAnswered = false;
+
+function startWordOrder() {
+  woSentences = shuffle([...woAllSentences]);
+  woIdx = 0; woScore = 0; woAnswered = false;
+  document.getElementById('woResults').classList.remove('show');
+  document.getElementById('woCard').style.display = '';
+  loadWoQuestion();
+}
+
+function loadWoQuestion() {
+  if (woIdx >= woSentences.length) { showWoResults(); return; }
+  woAnswered = false; woSelected = [];
+  const s = woSentences[woIdx];
+  document.getElementById('woProgFill').style.width = (woIdx / woSentences.length * 100) + '%';
+  document.getElementById('woQNum').textContent = (woIdx+1) + '/' + woSentences.length;
+  document.getElementById('woTranslation').textContent = '"' + s.t + '"';
+  document.getElementById('woHint').textContent = s.hint || '';
+  document.getElementById('woFeedback').className = 'feedback';
+  document.getElementById('woNextBtn').style.display = 'none';
+  document.getElementById('woCheckBtn').style.display = '';
+  document.getElementById('woClearBtn').style.display = '';
+
+  woShuffled = shuffle([...s.w.map((w,i) => ({w, origIdx:i}))]);
+  renderWoPool();
+  renderWoAnswer();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function renderWoPool() {
+  const pool = document.getElementById('woWordPool');
+  pool.innerHTML = '';
+  woShuffled.forEach((item, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'word-chip' + (woSelected.find(s => s.poolIdx === i) ? ' used' : '');
+    chip.textContent = item.w;
+    chip.onclick = () => woSelectWord(i);
+    pool.appendChild(chip);
+  });
+}
+
+function renderWoAnswer() {
+  const area = document.getElementById('woAnswerArea');
+  area.innerHTML = '';
+  if (woSelected.length === 0) {
+    area.classList.remove('has-words');
+    area.innerHTML = '<span style="color:var(--muted);font-size:0.85rem">Tap words below to build the sentence…</span>';
+    return;
+  }
+  area.classList.add('has-words');
+  woSelected.forEach((item, ansIdx) => {
+    const chip = document.createElement('span');
+    chip.className = 'answer-chip';
+    chip.textContent = item.w;
+    chip.onclick = () => woRemoveWord(ansIdx);
+    area.appendChild(chip);
+  });
+}
+
+function woSelectWord(poolIdx) {
+  if (woAnswered || woSelected.find(s => s.poolIdx === poolIdx)) return;
+  woSelected.push({w: woShuffled[poolIdx].w, poolIdx});
+  renderWoPool(); renderWoAnswer();
+}
+
+function woRemoveWord(ansIdx) {
+  if (woAnswered) return;
+  woSelected.splice(ansIdx, 1);
+  renderWoPool(); renderWoAnswer();
+}
+
+function woClear() {
+  if (woAnswered) return;
+  woSelected = []; renderWoPool(); renderWoAnswer();
+}
+
+function woCheck() {
+  if (woAnswered || woSelected.length === 0) return;
+  woAnswered = true;
+  const s = woSentences[woIdx];
+  const userAnswer = woSelected.map(x => x.w).join(' ');
+  const correct = s.w.join(' ');
+  const ok = userAnswer === correct;
+  if (ok) woScore++;
+
+  const fb = document.getElementById('woFeedback');
+  if (ok) {
+    fb.className = 'feedback correct-fb show';
+    document.getElementById('woFbTitle').textContent = 'Correct! ✓';
+    document.getElementById('woFbBody').innerHTML = `<span style="font-family:Tahoma;font-size:1.2rem;direction:rtl">${correct}</span>`;
+    playSound(true);
+  } else {
+    fb.className = 'feedback wrong-fb show';
+    document.getElementById('woFbTitle').textContent = 'Not quite!';
+    document.getElementById('woFbBody').innerHTML = `Correct order: <span style="font-family:Tahoma;font-size:1.2rem;direction:rtl">${correct}</span>`;
+    playSound(false);
+  }
+  document.getElementById('woCheckBtn').style.display = 'none';
+  document.getElementById('woClearBtn').style.display = 'none';
+  document.getElementById('woNextBtn').style.display = '';
+  document.getElementById('woScore').textContent = woScore;
+}
+
+function woNext() { woIdx++; loadWoQuestion(); }
+
+function showWoResults() {
+  document.getElementById('woCard').style.display = 'none';
+  document.getElementById('woResults').classList.add('show');
+  const pct = Math.round(woScore / woSentences.length * 100);
+  document.getElementById('woResScore').textContent = woScore + ' / ' + woSentences.length;
+  document.getElementById('woResMsg').textContent = pct + '% — ' + (pct===100?'Perfect! آفرین!':pct>=80?'Excellent!':pct>=60?'Good work!':'Keep practicing the SOV order!');
+}
+
+// ============================================================
+//  PROGRESS DASHBOARD
+// ============================================================
+function buildProgressTab() {
+  const s = getStats();
+  document.getElementById('pgTotal').textContent = s.total;
+  const acc = s.total > 0 ? Math.round(s.correct / s.total * 100) : 0;
+  document.getElementById('pgAccuracy').textContent = acc + '%';
+  document.getElementById('pgStreak').textContent = getStreak();
+
+  const ts = ls.get('topicStats', {});
+  const bars = document.getElementById('masteryBars');
+  bars.innerHTML = '';
+  for (const key in topics) {
+    const stat = ts[key] || {total:0, correct:0};
+    const pct = stat.total > 0 ? Math.round(stat.correct / stat.total * 100) : 0;
+    const color = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--gold)' : 'var(--red)';
+    const row = document.createElement('div');
+    row.className = 'mastery-row';
+    row.innerHTML = `<div class="mastery-label">${topics[key].label}</div>
+      <div class="mastery-bar-wrap"><div class="mastery-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div class="mastery-pct" style="color:${color}">${stat.total > 0 ? pct+'%' : '—'}</div>`;
+    bars.appendChild(row);
+  }
+}
+
+// ============================================================
+//  KEYBOARD SHORTCUTS
+// ============================================================
+document.addEventListener('keydown',e=>{
+  const activeTab=document.querySelector('.section.active');if(!activeTab)return;
+  if(activeTab.id==='tab-grammar'){
+    if(!answered&&e.key>='1'&&e.key<='4'){
+      const btns=document.querySelectorAll('#optionsGrid .option-btn');
+      const i=parseInt(e.key)-1;if(btns[i]&&!btns[i].disabled)selectAnswer(i);
+    }
+    if((e.key==='Enter'||e.key===' ')&&!e.repeat){
+      e.preventDefault();
+      const nb=document.getElementById('nextBtn');if(nb.classList.contains('show'))nextQuestion();
+    }
+  }
+  if(activeTab.id==='tab-conj'){
+    if(!conjAnswered&&e.key>='1'&&e.key<='4'){
+      const btns=document.querySelectorAll('#conjOptions .option-btn');
+      const i=parseInt(e.key)-1;if(btns[i]&&!btns[i].disabled)btns[i].click();
+    }
+    if(e.key==='Enter'&&!e.repeat){
+      const nb=document.getElementById('conjNextBtn');if(nb.classList.contains('show'))nextConjDrill();
+    }
+  }
+  if(activeTab.id==='tab-wordorder'&&e.key==='Enter'&&!e.repeat){
+    e.preventDefault();
+    const nb=document.getElementById('woNextBtn');
+    if(nb.style.display!=='none')woNext();
+    else if(!woAnswered&&woSelected.length>0)woCheck();
+  }
+});
+
+// ============================================================
+//  INIT
+// ============================================================
+(function(){
+  applyTheme(ls.get('dark',true));
+  document.getElementById('streakBadge').textContent=`🔥 ${getStreak()} day streak`;
+  if(ls.get('timed',false))document.getElementById('timerWrap').style.display='';
+  buildNav();startGame('pronouns');
+  buildVocabCatNav();loadVocabCat();
+  initConjSelect();initConjDrill();
+  // Word order filter nav (just start all)
+  startWordOrder();
+})();
+</script>
+</body>
+</html>
